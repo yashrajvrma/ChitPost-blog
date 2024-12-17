@@ -1,0 +1,8 @@
+name = "backend"
+main = "src/index.ts"
+compatibility_date = "2024-12-14"
+
+# connection pool string
+[vars]
+DATABASE_URL="" 
+JWT_SECRET = ""
