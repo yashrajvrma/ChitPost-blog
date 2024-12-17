@@ -43,9 +43,9 @@ function Signup() {
             went above and beyond to address my concerns."
           </div>
           <div className="flex flex-col">
-            <div className="mt-3 text-2xl">Jules Winnfield</div>
-            <div className="text-xl text-slate-400 font-light">
-              Ceo, Acme Inc
+            <div className="mt-3 text-2xl font-semibold">Jules Winnfield</div>
+            <div className="text-lg text-slate-400 font-normal">
+              CEO, Acme Inc
             </div>
           </div>
         </div>
