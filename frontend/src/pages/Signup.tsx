@@ -23,8 +23,8 @@ function Signup() {
   const handleRegistration = async (data: SignupFormValues) => {
     try {
       console.log("data is" + data);
-      const response = await axios.post(url, data);
-      console.log("response is" + response);
+      // const response = await axios.post(url, data);
+      // console.log("response is" + response);
       navigate("/");
     } catch (error) {}
   };
