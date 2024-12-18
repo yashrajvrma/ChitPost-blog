@@ -69,8 +69,8 @@ userRouter.post("/signin", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
-  // zod validation import from npm package hiterx100/medium-common
 
+  // zod validation import from npm package hiterx100/medium-common
   const { success } = signinInput.safeParse(body);
   if (!success) {
     c.status(411);
@@ -82,7 +82,6 @@ userRouter.post("/signin", async (c) => {
     const user = await prisma.user.findUnique({
       where: {
         email: body.email,
-        password: body.password,
       },
     });
 
