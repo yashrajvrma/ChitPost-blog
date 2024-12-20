@@ -21,12 +21,18 @@ function Signup() {
   } = useForm<SignupFormValues>();
 
   const handleRegistration = async (data: SignupFormValues) => {
+    // console.log(data);
     try {
-      console.log("data is" + data);
-      // const response = await axios.post(url, data);
-      // console.log("response is" + response);
-      navigate("/");
-    } catch (error) {}
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/user/signup`,
+        data
+      );
+      if (response.data.success) {
+        console.log(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const registerOptions = {
@@ -53,7 +59,7 @@ function Signup() {
           <div className="text-4xl font-extrabold font-sans tracking-tight">
             Create an account
           </div>
-          <div className="text-lg text-slate-500 font-medium mt-2 mb-10">
+          <div className="text-lg text-slate-500 font-medium mt-2.5 mb-10">
             Already have an account?{" "}
             <span className="underline cursor-pointer " onClick={handleLogin}>
               Login
@@ -116,7 +122,7 @@ function Signup() {
               </small>
             </div>
             <div className="grid w-full max-w-sm items-center gap-1 mt-2">
-              <Button>Button</Button>
+              <Button className="text-md">Sign Up</Button>
             </div>
           </form>
         </div>

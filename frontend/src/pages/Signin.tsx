@@ -16,7 +16,7 @@ function Signin() {
           <div className="text-4xl font-extrabold font-sans tracking-tight">
             Login to your account
           </div>
-          <div className="text-lg text-slate-500 font-medium mt-2 mb-10">
+          <div className="text-lg text-slate-500 font-medium mt-2.5 mb-10">
             Don't have an account?{" "}
             <span className="underline cursor-pointer " onClick={handleLogin}>
               Signup
@@ -35,7 +35,7 @@ function Signin() {
             <Input type="password" id="password" />
           </div>
           <div className="grid w-full max-w-sm items-center gap-1 mt-2">
-            <Button>Button</Button>
+            <Button className="text-md">Sign in</Button>
           </div>
         </div>
         <div className="quote-section bg-slate-100 flex flex-col justify-center text-3xl md:text-4xl font-sans font-extrabold tracking-tight md:px-32 px-16 ">
