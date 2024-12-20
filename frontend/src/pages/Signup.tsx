@@ -53,10 +53,11 @@ function Signup() {
     try {
       const response = await apiCall;
       if (response.data.success) {
+        localStorage.setItem("accessToken", response.data.token);
         console.log(response.data.message);
         setTimeout(() => {
           navigate("/");
-        }, 1000);
+        }, 1500);
       }
     } catch (error) {
       console.error(error);
