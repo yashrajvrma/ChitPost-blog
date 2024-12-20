@@ -3,6 +3,7 @@ import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 
 interface SignupFormValues {
@@ -21,14 +22,41 @@ function Signup() {
   } = useForm<SignupFormValues>();
 
   const handleRegistration = async (data: SignupFormValues) => {
-    // console.log(data);
+    const apiCall = axios.post(
+      `${import.meta.env.VITE_BASE_URL}/user/signup`,
+      data
+    );
+
+    toast.promise(
+      apiCall,
+      {
+        loading: "Waiting for the response...",
+        success: (response) =>
+          response.data.message || "Registration done successfully!",
+        error: (error) => "Signup failed. Please try again.",
+      },
+      {
+        style: {
+          minWidth: "250px",
+        },
+        success: {
+          duration: 4000,
+          icon: "✅",
+        },
+        error: {
+          duration: 4000,
+          icon: "❌",
+        },
+      }
+    );
+
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/user/signup`,
-        data
-      );
+      const response = await apiCall;
       if (response.data.success) {
         console.log(response.data.message);
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
       }
     } catch (error) {
       console.error(error);
@@ -123,6 +151,7 @@ function Signup() {
             </div>
             <div className="grid w-full max-w-sm items-center gap-1 mt-2">
               <Button className="text-md">Sign Up</Button>
+              <Toaster />
             </div>
           </form>
         </div>
