@@ -180,6 +180,15 @@ blogRouter.get("/:id/view", authMiddleware, async (c) => {
       where: {
         id: id,
       },
+      include: {
+        author: {
+          select: {
+            firstName: true,
+            lastName: true,
+            profileColor: true,
+          },
+        },
+      },
     });
     c.status(200);
     return c.json({
