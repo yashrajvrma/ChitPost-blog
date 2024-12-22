@@ -6,20 +6,14 @@ import Home from "./pages/Home";
 import Blogs from "./pages/Blogs";
 import UserAuth from "./pages/UserAuth";
 import GuestOnly from "./pages/GuestOnly";
+import DetailedBlog from "./pages/DetailedBlog";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route
-            path={"/"}
-            element={
-              <UserAuth>
-                <Home />
-              </UserAuth>
-            }
-          />
+          <Route path={"/"} element={<Home />} />
           <Route
             path={"/signup"}
             element={
@@ -36,7 +30,8 @@ function App() {
               </GuestOnly>
             }
           />
-          <Route path={"/post/:id"} element={<Blogs />} />
+          <Route path={"/blogs"} element={<Blogs />} />
+          <Route path={"/blog/:id"} element={<DetailedBlog />} />
         </Routes>
       </BrowserRouter>
     </>

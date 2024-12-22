@@ -53,11 +53,11 @@ function Signin() {
           minWidth: "250px",
         },
         success: {
-          duration: 4000,
+          duration: 1000,
           icon: "✅",
         },
         error: {
-          duration: 4000,
+          duration: 1000,
           icon: "❌",
         },
       }
@@ -69,8 +69,9 @@ function Signin() {
         console.log(response.data.message);
         localStorage.setItem("accessToken", response.data.token);
         setTimeout(() => {
+          toast.dismiss();
           navigate("/");
-        }, 1500);
+        }, 1000);
       }
     } catch (error) {
       console.error(error);
@@ -118,7 +119,7 @@ function Signin() {
             </div>
             <div className="grid w-full max-w-sm items-center gap-1 mt-2">
               <Button className="text-md">Sign in</Button>
-              <Toaster />
+              <Toaster containerClassName="text-lg font-sans" />
             </div>
           </form>
         </div>

@@ -40,11 +40,11 @@ function Signup() {
           minWidth: "250px",
         },
         success: {
-          duration: 4000,
+          duration: 1000,
           icon: "✅",
         },
         error: {
-          duration: 4000,
+          duration: 1000,
           icon: "❌",
         },
       }
@@ -56,8 +56,9 @@ function Signup() {
         localStorage.setItem("accessToken", response.data.token);
         console.log(response.data.message);
         setTimeout(() => {
+          toast.dismiss();
           navigate("/");
-        }, 1500);
+        }, 1000);
       }
     } catch (error) {
       console.error(error);
@@ -152,7 +153,7 @@ function Signup() {
             </div>
             <div className="grid w-full max-w-sm items-center gap-1 mt-2">
               <Button className="text-md">Sign Up</Button>
-              <Toaster />
+              <Toaster containerClassName="text-lg font-sans" />
             </div>
           </form>
         </div>
