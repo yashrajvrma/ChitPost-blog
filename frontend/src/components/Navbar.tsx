@@ -45,7 +45,7 @@ const NavBar = () => {
               strokeWidth={1}
             />
           </div>
-          <div className="sm:pb-1 pb-2.5">
+          <div>
             <input
               className="sm:w-44 w-24 sm:text-lg text-sm text-slate-800 p-1 focus:outline-none bg-transparent"
               type="text"

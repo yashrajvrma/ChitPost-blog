@@ -52,7 +52,7 @@ function BlogCard({
           <div className="title text-slate-900 text-base md:text-2xl font-bold py-1.5">
             {title}
           </div>
-          <div className="text-slate-600 md:text-lg text-sm line-clamp-3 md:line-clamp-4 font-medium">
+          <div className="text-slate-600 md:text-lg text-sm line-clamp-3 md:line-clamp-3 font-medium">
             {content}
           </div>
         </div>

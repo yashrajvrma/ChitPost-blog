@@ -1,14 +1,28 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import BlogCard from "../components/BlogCard";
 import NavBar from "../components/Navbar";
+import DetailedBlogCard from "../components/DetailedBlogCard";
+
+interface Author {
+  firstName: string;
+  lastName: string;
+  profileColor: string;
+}
+
+interface Blog {
+  id: string;
+  title: string;
+  description: string;
+  published: boolean;
+  authorId: string;
+  author: Author;
+}
 
 export default function DetailedBlog() {
   const accessToken = localStorage.getItem("accessToken");
-  const id = useParams();
-
-  const [blog, setBlog] = useState("");
+  const { id } = useParams<{ id: string }>(); // Ensure `id` is a string
+  const [blog, setBlog] = useState<Blog | null>(null); // Blog state can be null initially
 
   useEffect(() => {
     const fetchDetailedBlog = async () => {
@@ -25,17 +39,33 @@ export default function DetailedBlog() {
           setBlog(response.data.blog);
         }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching blog:", error);
       }
     };
+
     if (id) {
       fetchDetailedBlog();
     }
-  }, [id]);
-  console.log(id);
+  }, [id, accessToken]);
+
   return (
     <div>
       <NavBar />
+      <div>
+        {blog ? (
+          <DetailedBlogCard
+            title={blog.title}
+            content={blog.description}
+            firstName={blog.author.firstName}
+            lastName={blog.author.lastName}
+            profileColor={blog.author.profileColor}
+          />
+        ) : (
+          <div className="flex justify-center items-center h-screen">
+            <p>Loading blog details...</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
