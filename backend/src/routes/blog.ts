@@ -153,7 +153,7 @@ blogRouter.put("/update", authMiddleware, async (c) => {
   }
 });
 
-blogRouter.get("/:id/view", async (c) => {
+blogRouter.get("/:id/view", authMiddleware, async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
