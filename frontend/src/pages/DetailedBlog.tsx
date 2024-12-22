@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import BlogCard from "../components/BlogCard";
+import NavBar from "../components/Navbar";
 
 export default function DetailedBlog() {
   const accessToken = localStorage.getItem("accessToken");
@@ -32,5 +33,9 @@ export default function DetailedBlog() {
     }
   }, [id]);
   console.log(id);
-  return <div>hii </div>;
+  return (
+    <div>
+      <NavBar />
+    </div>
+  );
 }

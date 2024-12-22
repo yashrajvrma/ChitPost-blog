@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import BlogCard from "../components/BlogCard";
 import axios from "axios";
+import NavBar from "../components/Navbar";
 
 interface Author {
   firstName: string;
@@ -36,20 +37,25 @@ function Blogs() {
   }, []);
 
   return (
-    <div className="flex justify-center items-center">
+    <div>
       <div>
-        {" "}
-        {blogs.map((item, index) => (
-          <BlogCard
-            key={index}
-            id={item.id}
-            firstName={item.author.firstName}
-            lastName={item.author.lastName}
-            title={item.title}
-            content={item.description}
-            profileColor={item.author.profileColor}
-          />
-        ))}
+        <NavBar />
+      </div>
+      <div className="flex justify-center items-center mt-5">
+        <div>
+          {" "}
+          {blogs.map((item, index) => (
+            <BlogCard
+              key={index}
+              id={item.id}
+              firstName={item.author.firstName}
+              lastName={item.author.lastName}
+              title={item.title}
+              content={item.description}
+              profileColor={item.author.profileColor}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
