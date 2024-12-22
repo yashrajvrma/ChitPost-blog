@@ -8,12 +8,13 @@ datasource db {
 }
 
 model User {
-  id        String @id @default(uuid())
-  firstName String
-  lastName  String
-  email     String @unique
-  password  String
-  post      Post[]
+  id           String @id @default(uuid())
+  firstName    String
+  lastName     String
+  email        String @unique
+  password     String
+  profileColor String @default("#ff2800")
+  post         Post[]
 }
 
 model Post {

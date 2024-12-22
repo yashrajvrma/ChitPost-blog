@@ -1,11 +1,11 @@
-name = "backend"
-main = "src/index.ts"
+name = "medium-blog-site"
+main = "dist/index.js"
 compatibility_date = "2024-12-14"
 
 # connection pool string
 [vars]
-DATABASE_URL="" 
-JWT_SECRET = ""
+DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiZmRjODVmYTAtMDk5OS00MDU1LWIwMjctNjEwYWNlOTU2Nzk2IiwidGVuYW50X2lkIjoiMTYyNzcwYTRiNmE5MzkwYWE4Y2U4ODI3NGIwNWY0NzE4YTNlMjJkZTFjMGNkOGE1MTYxM2JkYWFiNDM2MzI3YiIsImludGVybmFsX3NlY3JldCI6ImRhMDQxZGFmLTczM2MtNGRlOC04NjMwLTVmMjNlZTI5NGFiMCJ9.vLsZFuT0Nj-J9K9cYZ-PLl_x-AszU-evwGpAXgheowo" 
+JWT_SECRET = "hitler-secret-password"
 
 # wrangler.toml (wrangler v3.88.0^)
 [observability.logs]

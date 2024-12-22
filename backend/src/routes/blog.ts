@@ -120,7 +120,6 @@ blogRouter.put("/update", authMiddleware, async (c) => {
       where: {
         id: body.id,
       },
-      
     });
 
     if (!checkIdExist) {
@@ -202,7 +201,17 @@ blogRouter.get("/view/bulk", async (c) => {
   }).$extends(withAccelerate());
 
   try {
-    const blogs = await prisma.post.findMany();
+    const blogs = await prisma.post.findMany({
+      include: {
+        author: {
+          select: {
+            firstName: true,
+            lastName: true,
+            profileColor: true,
+          },
+        },
+      },
+    });
     // console.log(allBlogs);
     c.status(200);
     return c.json({

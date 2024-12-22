@@ -1,9 +1,12 @@
+import randomColor from "randomcolor";
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign } from "hono/jwt";
 import bcrypt from "bcryptjs";
 import { signupInput, signinInput } from "@hitlerx100/medium-common";
+
+const color = randomColor();
 
 export const userRouter = new Hono<{
   Bindings: {
@@ -38,6 +41,7 @@ userRouter.post("/signup", async (c) => {
         lastName: body.lastName,
         email: body.email,
         password: hashedPassword,
+        profileColor: color,
       },
     });
 
@@ -78,6 +82,7 @@ userRouter.post("/signin", async (c) => {
       message: "Inputs are not correct",
     });
   }
+
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -86,10 +91,12 @@ userRouter.post("/signin", async (c) => {
     });
 
     if (!user) {
+      // console.log("No user found with email:", body.email);
       c.status(403);
       return c.json({
         success: false,
-        error: "Invalid email",
+        msg: body.email,
+        error: "InvalidEmail",
       });
     }
 
