@@ -7,6 +7,7 @@ import Blogs from "./pages/Blogs";
 import UserAuth from "./pages/UserAuth";
 import GuestOnly from "./pages/GuestOnly";
 import DetailedBlog from "./pages/DetailedBlog";
+import PublishBlog from "./pages/PublishBlog";
 
 function App() {
   return (
@@ -31,7 +32,22 @@ function App() {
             }
           />
           <Route path={"/blogs"} element={<Blogs />} />
-          <Route path={"/blog/:id"} element={<DetailedBlog />} />
+          <Route
+            path={"/blog/:id"}
+            element={
+              <UserAuth>
+                <DetailedBlog />
+              </UserAuth>
+            }
+          />
+          <Route
+            path={"/blog/create"}
+            element={
+              <UserAuth>
+                <PublishBlog />
+              </UserAuth>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>
