@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { User } from "lucide-react";
 import { LogOut } from "lucide-react";
 import { UserRoundPlus } from "lucide-react";
-import { Search } from "lucide-react";
 import {
   Popover,
   PopoverContent,
