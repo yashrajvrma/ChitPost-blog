@@ -2,6 +2,8 @@ import { Editor } from "novel-lightweight";
 import { useState } from "react";
 import axios from "axios";
 import { parseDocument } from "htmlparser2";
+import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 // Type for the JSON structure
 type HtmlNode = {
@@ -15,6 +17,8 @@ type HtmlNode = {
 export default function EditorComponent() {
   const accessToken = localStorage.getItem("accessToken");
   const [editorData, setEditorData] = useState<string | undefined>(undefined);
+
+  const navigate = useNavigate();
 
   // Function to convert HTML node to JSON structure
   const convertNodeToJson = (node: any): HtmlNode => {
@@ -65,26 +69,54 @@ export default function EditorComponent() {
         // Convert HTML to JSON structure
         const jsonContent = htmlToJson(editorData);
 
-        // Send the JSON content to backend
-        const response = await axios.post(
-          `${import.meta.env.VITE_BASE_URL}/post/publish`,
+        if (!jsonContent) {
+          return;
+        }
+        // Toast.promise with the actual axios request as the promise
+        await toast.promise(
+          axios.post(
+            `${import.meta.env.VITE_BASE_URL}/post/publish`,
+            {
+              content: JSON.stringify(jsonContent), // Convert to string for transmission
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+              },
+            }
+          ),
           {
-            content: JSON.stringify(jsonContent), // Convert to string for transmission
+            loading: "Waiting for the response...",
+            success: "Post Published successfully!",
+            error: "Something went wrong, Please try again.",
           },
           {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
+            style: {
+              minWidth: "250px",
+            },
+            success: {
+              duration: 2000,
+              icon: "✅",
+            },
+            error: {
+              duration: 1000,
+              icon: "❌",
             },
           }
         );
 
-        console.log("Successfully published:", response.data);
-        // Add success notification or redirect here
+        // Optionally handle the response if needed
+        // console.log("Successfully published");
+        // setTimeout(() => {
+        //   navigate("/");
+        // },2000);
       } catch (error) {
         console.error("Error publishing content:", error);
-        // Add error handling notification here
+        toast.error("Failed to publish the post. Please try again.");
       }
+    } else {
+      toast.error("No content to publish!");
     }
   };
 
@@ -138,6 +170,7 @@ export default function EditorComponent() {
         >
           Publish
         </button>
+        <Toaster containerClassName="text-lg font-sans" />
       </div>
     </div>
   );
