@@ -30,12 +30,12 @@ export default function EditorComponent() {
       jsonNode.attribs = node.attribs;
     }
 
-    if (node.type === 'text') {
+    if (node.type === "text") {
       jsonNode.data = node.data;
     }
 
     if (node.children && node.children.length > 0) {
-      jsonNode.children = node.children.map((child: any) => 
+      jsonNode.children = node.children.map((child: any) =>
         convertNodeToJson(child)
       );
     }
@@ -51,8 +51,8 @@ export default function EditorComponent() {
     });
 
     const jsonStructure = {
-      type: 'root',
-      children: dom.children.map(node => convertNodeToJson(node))
+      type: "root",
+      children: dom.children.map((node) => convertNodeToJson(node)),
     };
 
     return jsonStructure;
@@ -64,7 +64,7 @@ export default function EditorComponent() {
       try {
         // Convert HTML to JSON structure
         const jsonContent = htmlToJson(editorData);
-        
+
         // Send the JSON content to backend
         const response = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/post/publish`,
@@ -74,11 +74,11 @@ export default function EditorComponent() {
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
           }
         );
-        
+
         console.log("Successfully published:", response.data);
         // Add success notification or redirect here
       } catch (error) {
@@ -131,10 +131,10 @@ export default function EditorComponent() {
       </div>
 
       {/* Publish Button */}
-      <div className="fixed bottom-6 right-6">
-        <button 
+      <div className="fixed md:bottom-8 md:right-10 bottom-5 right-5">
+        <button
           onClick={handlePublish}
-          className="flex items-center justify-center px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full transition-colors duration-200"
+          className="flex items-center md:text-lg justify-center md:px-7 md:py-3 px-5 py-2 text-base bg-green-500 hover:bg-green-600 text-white font-semibold rounded-md transition-colors duration-200"
         >
           Publish
         </button>

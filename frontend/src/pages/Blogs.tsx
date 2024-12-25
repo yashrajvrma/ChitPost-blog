@@ -8,16 +8,77 @@ interface Author {
   lastName: string;
   profileColor: string;
 }
-interface Blogs {
+
+interface Blog {
   id: string;
-  title: string;
-  description: string;
-  published: boolean;
+  content: string;
+  createdAt: string;
   authorId: string;
   author: Author;
 }
+
+// Utility function to extract plain text from JSON content
+const extractTextFromContent = (jsonContent: string): string => {
+  try {
+    const parsed = JSON.parse(jsonContent);
+    let text = "";
+
+    const traverse = (node: any): void => {
+      if (node.type === "text") {
+        text += node.data + " ";
+      }
+      if (node.children) {
+        node.children.forEach(traverse);
+      }
+    };
+
+    traverse(parsed);
+    return text.trim();
+  } catch (error) {
+    console.error("Error parsing content:", error);
+    return "";
+  }
+};
+
+// // Utility function to format date
+// const formatDate = (dateString: string): string => {
+//   return new Date(dateString).toLocaleDateString("en-US", {
+//     month: "short",
+//     day: "numeric",
+//     year: "numeric",
+//   });
+// };
+
+// Extract first heading as title
+const extractTitle = (jsonContent: string): string => {
+  try {
+    const parsed = JSON.parse(jsonContent);
+    let title = "";
+
+    const findTitle = (node: any): boolean => {
+      if (node.type === "tag" && (node.name === "h1" || node.name === "h2")) {
+        title = node.children?.[0]?.data || "";
+        return true;
+      }
+      if (node.children) {
+        for (const child of node.children) {
+          if (findTitle(child)) return true;
+        }
+      }
+      return false;
+    };
+
+    findTitle(parsed);
+    return title || "Untitled";
+  } catch (error) {
+    console.error("Error extracting title:", error);
+    return "Untitled";
+  }
+};
+
+// Updated Blogs component
 function Blogs() {
-  const [blogs, setBlogs] = useState<Blogs[]>([]);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
 
   useEffect(() => {
     const fetchAllBlogs = async () => {
@@ -42,17 +103,17 @@ function Blogs() {
         <NavBar />
       </div>
       <div className="flex justify-center items-center mt-5">
-        <div>
-          {" "}
-          {blogs.map((item, index) => (
+        <div className="w-full max-w-5xl px-4">
+          {blogs.map((blog) => (
             <BlogCard
-              key={index}
-              id={item.id}
-              firstName={item.author.firstName}
-              lastName={item.author.lastName}
-              title={item.title}
-              content={item.description}
-              profileColor={item.author.profileColor}
+              key={blog.id}
+              id={blog.id}
+              firstName={blog.author.firstName}
+              lastName={blog.author.lastName}
+              title={extractTitle(blog.content)}
+              content={extractTextFromContent(blog.content)}
+              profileColor={blog.author.profileColor}
+              createdAt={blog.createdAt}
             />
           ))}
         </div>
@@ -60,5 +121,4 @@ function Blogs() {
     </div>
   );
 }
-
 export default Blogs;

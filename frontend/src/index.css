@@ -1,6 +1,20 @@
+@font-face {
+  font-family: "Garamond";
+  src: url("./assets/fonts/garamond_[allfont.ru].ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("./assets/fonts/Geist-VariableFont_wght.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -29,6 +43,7 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -56,12 +71,19 @@
     --chart-5: 340 75% 55%;
   }
 }
+
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
     @apply font-sans; /* Ensures DM Sans is applied globally */
+  }
+
+  /* Add Garamond to a specific class */
+  .font-garamond {
+    font-family: "Garamond", serif;
   }
 }

@@ -6,6 +6,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['"DM Sans"', "sans-serif"], // Override default sans to DM Sans
+        garamond: ["Garamond", "serif"],
+        geist: ["Geist", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

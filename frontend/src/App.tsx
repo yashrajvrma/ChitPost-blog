@@ -8,6 +8,7 @@ import UserAuth from "./pages/UserAuth";
 import GuestOnly from "./pages/GuestOnly";
 import DetailedBlog from "./pages/DetailedBlog";
 import PublishBlog from "./pages/PublishBlog";
+import PublishedPage from "./pages/PublishedPage";
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
             path={"/blog/:id"}
             element={
               <UserAuth>
-                <DetailedBlog />
+                <PublishedPage />
               </UserAuth>
             }
           />
