@@ -1,17 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
-import { User } from "lucide-react";
-import { LogOut } from "lucide-react";
-import { UserRoundPlus } from "lucide-react";
-import { Search } from "lucide-react";
+import { User, LogOut, UserPlus, Search } from "lucide-react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "../components/ui/popover";
 import toast, { Toaster } from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../feature/userSlice";
-import { useSelector } from "react-redux";
+import { persistor } from "../app/store";
+import { RootState } from "../app/store";
 
 const notify = () => toast("Logged out Successfully");
 
@@ -20,17 +18,16 @@ const NavBar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const user = useSelector(
-    (state: {
-      user: { firstName: string; lastName: string; profileColor: string };
-    }) => state.user
-  );
+  const user = useSelector((state: RootState) => state.user);
 
   const handleSignup = () => {
     navigate("/signup");
   };
-  const handleLogout = () => {
+
+  const handleLogout = async () => {
     localStorage.removeItem("accessToken");
+
+    // Clear user data from Redux state
     dispatch(
       setUser({
         firstName: "",
@@ -38,6 +35,9 @@ const NavBar = () => {
         profileColor: "",
       })
     );
+
+    // Clear persisted state
+    await persistor.purge();
 
     notify();
     setTimeout(() => {
@@ -62,13 +62,11 @@ const NavBar = () => {
               strokeWidth={1}
             />
           </div>
-          <div>
-            <input
-              className="sm:w-44 w-24 sm:text-lg text-sm text-slate-800 p-1 focus:outline-none bg-transparent"
-              type="text"
-              placeholder="Search"
-            />
-          </div>
+          <input
+            className="sm:w-44 w-24 sm:text-base text-sm text-slate-800 px-1 pb-3 focus:outline-none bg-transparent"
+            type="text"
+            placeholder="Search"
+          />
         </div>
       </div>
 
@@ -93,29 +91,22 @@ const NavBar = () => {
           {accessToken ? (
             <div className="flex flex-col gap-2 cursor-pointer">
               <div className="flex felx-row gap-2">
-                <div className="pt-0.5">
-                  <User size={19} />
-                </div>
-                <div className="text-lg">{`${user.firstName} ${user.lastName}`}</div>
+                <User size={19} />
+                <div className="text-lg">{`${user.firstName} ${user.lastName
+                  .substring(0, 1)
+                  .toUpperCase()}${user.lastName.substring(1)}`}</div>
               </div>
               <div className="flex felx-row gap-2">
-                <div className="pt-1">
-                  <LogOut size={18} />
-                </div>
-                <div className="text-lg" onClick={() => handleLogout()}>
+                <LogOut size={18} />
+                <div className="text-lg" onClick={handleLogout}>
                   Log out
                 </div>
               </div>
             </div>
           ) : (
             <div className="flex felx-row gap-2">
-              <div className="pt-1">
-                <UserRoundPlus size={18} />
-              </div>
-              <div
-                className="text-lg cursor-pointer"
-                onClick={() => handleSignup()}
-              >
+              <UserPlus size={18} />
+              <div className="text-lg cursor-pointer" onClick={handleSignup}>
                 Create account
               </div>
             </div>

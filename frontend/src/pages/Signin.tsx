@@ -7,6 +7,7 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "../feature/userSlice";
+import { error } from "console";
 
 interface SigninFormValues {
   email: string;
@@ -46,7 +47,16 @@ function Signin() {
         loading: "Waiting for the response...",
         success: (response) =>
           response.data.message || "Logged in successfully!",
-        error: "Login failed. Please try again.",
+        error: (error) => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.message
+          ) {
+            return error.response.data.message; // Use backend error message
+          }
+          return "Login failed, please try again";
+        },
       },
       {
         style: {

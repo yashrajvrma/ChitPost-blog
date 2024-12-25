@@ -14,8 +14,13 @@ const userSlice = createSlice({
       state.lastName = lastName;
       state.profileColor = profileColor;
     },
+    removeUser: (state) => {
+      state.firstName = "";
+      state.lastName = "";
+      state.profileColor = "";
+    },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, removeUser } = userSlice.actions;
 export default userSlice.reducer;

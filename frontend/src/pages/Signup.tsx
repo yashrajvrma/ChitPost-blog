@@ -37,7 +37,16 @@ function Signup() {
         loading: "Waiting for the response...",
         success: (response) =>
           response.data.message || "Registration done successfully!",
-        error: (error) => "Signup failed. Please try again.",
+        error: (error) => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.message
+          ) {
+            return error.response.data.message; // Use backend error message
+          }
+          return "Sign up failed, please try again";
+        },
       },
       {
         style: {
