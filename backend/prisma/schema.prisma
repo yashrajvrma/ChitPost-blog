@@ -8,13 +8,14 @@ datasource db {
 }
 
 model User {
-  id           String @id @default(uuid())
+  id           String    @id @default(uuid())
   firstName    String
   lastName     String
-  email        String @unique
+  email        String    @unique
   password     String
-  profileColor String @default("#ff2800")
+  profileColor String    @default("#ff2800")
   post         Post[]
+  Content      Content[]
 }
 
 model Post {
@@ -24,4 +25,13 @@ model Post {
   published   Boolean @default(false)
   author      User    @relation(fields: [authorId], references: [id])
   authorId    String
+}
+
+model Content {
+  id        String   @id @default(uuid())
+  content   Json
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
 }

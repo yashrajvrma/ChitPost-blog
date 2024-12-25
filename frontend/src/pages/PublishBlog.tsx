@@ -11,6 +11,7 @@ function PublishBlog() {
         <div className="max-w-xl md:max-w-4xl w-full h-full">
           <EditorComponent />
         </div>
+        
       </div>
     </div>
   );

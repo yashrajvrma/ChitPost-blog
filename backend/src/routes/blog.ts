@@ -4,6 +4,8 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { userIdMiddleware } from "../middleware/userIdMiddleware";
 import { createBlogInput, updateBlogInput } from "@hitlerx100/medium-common";
+import html2json from "html2json";
+// import htmlToJson from "html-to-json";
 
 export const blogRouter = new Hono<{
   Bindings: {
@@ -15,51 +17,50 @@ export const blogRouter = new Hono<{
   };
 }>();
 
-blogRouter.post("/create", authMiddleware, userIdMiddleware, async (c) => {
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
+// blogRouter.post("/create", authMiddleware, userIdMiddleware, async (c) => {
+//   const prisma = new PrismaClient({
+//     datasourceUrl: c.env.DATABASE_URL,
+//   }).$extends(withAccelerate());
 
-  const body = await c.req.json();
-  // zod validation import from npm package hiterx100/medium-common
-  const { success } = createBlogInput.safeParse(body);
-  if (!success) {
-    c.status(411);
-    return c.json({
-      message: "Inputs are not correct",
-    });
-  }
+//   // const body = await c.req.json();
+//   // // zod validation import from npm package hiterx100/medium-common
+//   // const { success } = createBlogInput.safeParse(body);
+//   // if (!success) {
+//   //   c.status(411);
+//   //   return c.json({
+//   //     message: "Inputs are not correct",
+//   //   });
+//   // }
 
-  const authorId = c.get("userId");
+//   const authorId = c.get("userId");
 
-  try {
-    // create post and each post will have authorId i.e id of the user creating post
-    const blog = await prisma.post.create({
-      data: {
-        title: body.title,
-        description: body.description,
-        authorId: authorId,
-      },
-    });
+//   try {
+//     // create post and each post will have authorId i.e id of the user creating post
+//     const blog = await prisma.post.create({
+//       data: {
+//         content :
+//         authorId: authorId,
+//       },
+//     });
 
-    c.status(200);
-    return c.json({
-      success: true,
-      id: blog.id,
-      message: "Post created successfully",
-    });
+//     c.status(200);
+//     return c.json({
+//       success: true,
+//       id: blog.id,
+//       message: "Post created successfully",
+//     });
 
-    // console.log("response");
+//     // console.log("response");
 
-    // c.json("ok");
-  } catch (error) {
-    c.status(403);
-    return c.json({
-      success: false,
-      message: "Something went wrong",
-    });
-  }
-});
+//     // c.json("ok");
+//   } catch (error) {
+//     c.status(403);
+//     return c.json({
+//       success: false,
+//       message: "Something went wrong",
+//     });
+//   }
+// });
 
 blogRouter.get("/all", authMiddleware, userIdMiddleware, async (c) => {
   const prisma = new PrismaClient({
@@ -70,7 +71,7 @@ blogRouter.get("/all", authMiddleware, userIdMiddleware, async (c) => {
 
   try {
     // get all the post of the user by their author Id
-    const blog = await prisma.post.findMany({
+    const blog = await prisma.content.findMany({
       where: {
         authorId: authorId,
       },
@@ -106,17 +107,17 @@ blogRouter.put("/update", authMiddleware, async (c) => {
 
   const body = await c.req.json();
   // zod validation import from npm package hiterx100/medium-common
-  const { success } = updateBlogInput.safeParse(body);
-  if (!success) {
-    c.status(411);
-    return c.json({
-      message: "Inputs are not correct",
-    });
-  }
+  // const { success } = updateBlogInput.safeParse(body);
+  // if (!success) {
+  //   c.status(411);
+  //   return c.json({
+  //     message: "Inputs are not correct",
+  //   });
+  // }
 
   try {
     // check if user has entered correct blog id
-    const checkIdExist = await prisma.post.findUnique({
+    const checkIdExist = await prisma.content.findUnique({
       where: {
         id: body.id,
       },
@@ -129,13 +130,12 @@ blogRouter.put("/update", authMiddleware, async (c) => {
         message: "No such id exist",
       });
     }
-    const blog = await prisma.post.update({
+    const blog = await prisma.content.update({
       where: {
         id: body.id,
       },
       data: {
-        title: body.title,
-        description: body.description,
+        content: body.content,
       },
     });
     c.status(200);
@@ -162,7 +162,7 @@ blogRouter.get("/:id/view", authMiddleware, async (c) => {
 
   try {
     // check if user has entered correct blog id
-    const checkIdExist = await prisma.post.findUnique({
+    const checkIdExist = await prisma.content.findUnique({
       where: {
         id: id,
       },
@@ -176,7 +176,7 @@ blogRouter.get("/:id/view", authMiddleware, async (c) => {
       });
     }
 
-    const blog = await prisma.post.findFirst({
+    const blog = await prisma.content.findFirst({
       where: {
         id: id,
       },
@@ -190,6 +190,25 @@ blogRouter.get("/:id/view", authMiddleware, async (c) => {
         },
       },
     });
+    // const blog = await prisma.post.findFirst({
+    //   where: {
+    //     id: id,
+    //   },
+    //   include: {
+    //     author: {
+    //       select: {
+    //         firstName: true,
+    //         lastName: true,
+    //         profileColor: true,
+    //       },
+    //     },
+    //   },
+    // });
+
+    if (!blog) {
+      return c.json({ error: "Post not found" }, 404);
+    }
+
     c.status(200);
     return c.json({
       success: true,
@@ -210,7 +229,7 @@ blogRouter.get("/view/bulk", async (c) => {
   }).$extends(withAccelerate());
 
   try {
-    const blogs = await prisma.post.findMany({
+    const blogs = await prisma.content.findMany({
       include: {
         author: {
           select: {
@@ -233,5 +252,49 @@ blogRouter.get("/view/bulk", async (c) => {
       success: false,
       message: "Something went wrong",
     });
+  }
+});
+
+blogRouter.post("/publish", authMiddleware, userIdMiddleware, async (c) => {
+  console.log("post request found");
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  // Safely retrieve content and parse it
+  const { content } = await c.req.json();
+  if (!content) {
+    return c.json({ success: false, message: "Content is required" }, 400);
+  }
+
+  // Proceed to parse content if it exists
+  // const parsedJson = html2json.html2json(content);
+  const authorId = c.get("userId");
+
+  try {
+    const createBlog = await prisma.content.create({
+      data: {
+        content: content,
+        authorId: authorId,
+      },
+    });
+    return c.json(
+      {
+        success: true,
+        id: createBlog.id,
+        post: content,
+        message: "Post created successfully",
+      },
+      200
+    );
+  } catch (error) {
+    console.error("Error during post creation:", error);
+    return c.json(
+      {
+        success: false,
+        message: "Something went wrong",
+      },
+      403
+    );
   }
 });
