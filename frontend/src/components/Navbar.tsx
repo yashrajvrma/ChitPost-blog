@@ -63,7 +63,7 @@ const NavBar = () => {
             />
           </div>
           <input
-            className="sm:w-44 w-24 sm:text-base text-sm text-slate-800 px-1 pb-3 focus:outline-none bg-transparent"
+            className="sm:w-44 w-24 sm:text-base text-sm text-slate-800 px-1 focus:outline-none bg-transparent"
             type="text"
             placeholder="Search"
           />
@@ -75,7 +75,7 @@ const NavBar = () => {
           {user.profileColor ? (
             <div
               style={{ backgroundColor: user.profileColor }}
-              className="flex w-8 h-8 md:w-11 md:h-11 rounded-full text-slate-50 justify-center items-center text-base tracking-wide"
+              className="flex w-8 h-8 md:w-11 md:h-11 rounded-full text-slate-50 justify-center items-center text-base tracking-tighter"
             >
               {user.firstName.substring(0, 1).toUpperCase()}
               {user.lastName.substring(0, 1).toUpperCase()}
