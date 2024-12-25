@@ -1,5 +1,5 @@
 import { Editor } from "novel-lightweight";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { parseDocument } from "htmlparser2";
 import toast, { Toaster } from "react-hot-toast";
@@ -17,7 +17,7 @@ type HtmlNode = {
 export default function EditorComponent() {
   const accessToken = localStorage.getItem("accessToken");
   const [editorData, setEditorData] = useState<string | undefined>(undefined);
-
+  const [isPublishable, setIsPublishable] = useState<boolean>(false);
   const navigate = useNavigate();
 
   // Function to convert HTML node to JSON structure
@@ -62,61 +62,72 @@ export default function EditorComponent() {
     return jsonStructure;
   };
 
+  // Function to check if the editor content is empty or placeholder
+  const isEditorEmpty = (html: string): boolean => {
+    const jsonContent = htmlToJson(html);
+    // Check if the editor contains only an empty paragraph or no meaningful content
+    return (
+      !jsonContent.children ||
+      jsonContent.children.length === 0 ||
+      (jsonContent.children.length === 1 &&
+        jsonContent.children[0].name === "p" &&
+        (!jsonContent.children[0].children ||
+          jsonContent.children[0].children.length === 0))
+    );
+  };
+
   // Handle publishing the editor data
   const handlePublish = async () => {
-    if (editorData) {
-      try {
-        // Convert HTML to JSON structure
-        const jsonContent = htmlToJson(editorData);
+    if (!isPublishable) {
+      toast.error("Editor content is empty!");
+      return;
+    }
 
-        if (!jsonContent) {
-          return;
-        }
-        // Toast.promise with the actual axios request as the promise
-        await toast.promise(
-          axios.post(
-            `${import.meta.env.VITE_BASE_URL}/post/publish`,
-            {
-              content: JSON.stringify(jsonContent), // Convert to string for transmission
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-                "Content-Type": "application/json",
-              },
-            }
-          ),
+    try {
+      // Convert HTML to JSON structure
+      const jsonContent = htmlToJson(editorData || "");
+
+      await toast.promise(
+        axios.post(
+          `${import.meta.env.VITE_BASE_URL}/post/publish`,
           {
-            loading: "Waiting for the response...",
-            success: "Post Published successfully!",
-            error: "Something went wrong, Please try again.",
+            content: JSON.stringify(jsonContent), // Convert to string for transmission
           },
           {
-            style: {
-              minWidth: "250px",
-            },
-            success: {
-              duration: 2000,
-              icon: "✅",
-            },
-            error: {
-              duration: 1000,
-              icon: "❌",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
             },
           }
-        );
+        ),
+        {
+          loading: "Waiting for the response...",
+          success: "Post Published successfully!",
+          error: "Something went wrong, Please try again.",
+        },
+        {
+          style: {
+            minWidth: "250px",
+          },
+          success: {
+            duration: 2000,
+            icon: "✅",
+          },
+          error: {
+            duration: 1000,
+            icon: "❌",
+          },
+        }
+      );
 
-        // Optionally handle the response if needed
-        // console.log("Successfully published");
-        // setTimeout(() => {
-        //   navigate("/");
-        // },2000);
-      } catch (error) {
-        console.error("Error publishing content:", error);
-        toast.error("Failed to publish the post. Please try again.");
-      }
-    } else {
-      toast.error("No content to publish!");
+      // Optionally handle the response
+      console.log("Successfully published");
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    } catch (error) {
+      console.error("Error publishing content:", error);
+      toast.error("Failed to publish the post. Please try again.");
     }
   };
 
@@ -147,6 +158,11 @@ export default function EditorComponent() {
     }
   };
 
+  useEffect(() => {
+    // Update the `isPublishable` state whenever `editorData` changes
+    setIsPublishable(editorData ? !isEditorEmpty(editorData) : false);
+  }, [editorData]);
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Editor Container */}
@@ -166,7 +182,12 @@ export default function EditorComponent() {
       <div className="fixed md:bottom-8 md:right-10 bottom-5 right-5">
         <button
           onClick={handlePublish}
-          className="flex items-center md:text-lg justify-center md:px-7 md:py-3 px-5 py-2 text-base bg-green-500 hover:bg-green-600 text-white font-semibold rounded-md transition-colors duration-200"
+          className={`flex items-center md:text-lg justify-center md:px-7 md:py-3 px-5 py-2 text-base font-semibold rounded-md transition-colors duration-200 ${
+            isPublishable
+              ? "bg-green-500 hover:bg-green-600 text-white"
+              : "bg-green-500 text-gray-300 hover:cursor-not-allowed"
+          }`}
+          disabled={!isPublishable}
         >
           Publish
         </button>
