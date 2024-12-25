@@ -55,14 +55,15 @@ userRouter.post("/signup", async (c) => {
     c.status(200);
     return c.json({
       success: true,
+      user: user,
       token: accessToken,
-      message: "User Created successfully",
+      message: "Signed up successfully",
     });
   } catch (error) {
     c.status(403);
     return c.json({
       success: false,
-      message: "Invalid",
+      message: "Sign up failed",
     });
   }
 });
@@ -96,7 +97,7 @@ userRouter.post("/signin", async (c) => {
       return c.json({
         success: false,
         msg: body.email,
-        error: "InvalidEmail",
+        error: "Enter correct email address",
       });
     }
 
@@ -107,7 +108,7 @@ userRouter.post("/signin", async (c) => {
       c.status(403);
       return c.json({
         success: false,
-        message: "Invalid password",
+        message: "Enter correct password",
       });
     }
 
@@ -117,6 +118,7 @@ userRouter.post("/signin", async (c) => {
     c.status(200);
     return c.json({
       success: true,
+      user: user,
       token: accessToken,
       message: "Signed in successfully",
     });
@@ -124,7 +126,7 @@ userRouter.post("/signin", async (c) => {
     c.status(403);
     return c.json({
       success: false,
-      message: "Invalid",
+      message: "Sign in failed",
     });
   }
 });
