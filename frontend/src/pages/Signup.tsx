@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUser } from "../feature/userSlice";
 
 interface SignupFormValues {
   firstName: string;
@@ -14,6 +16,8 @@ interface SignupFormValues {
 }
 function Signup() {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -53,8 +57,18 @@ function Signup() {
     try {
       const response = await apiCall;
       if (response.data.success) {
-        localStorage.setItem("accessToken", response.data.token);
-        console.log(response.data.message);
+        const { user, token } = response.data;
+
+        // Dispatch action to set user details in Redux state
+        dispatch(
+          setUser({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            profileColor: user.profileColor,
+          })
+        );
+        localStorage.setItem("accessToken", token);
+        // console.log(response.data.message);
         setTimeout(() => {
           toast.dismiss();
           navigate("/");

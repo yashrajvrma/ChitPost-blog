@@ -8,20 +8,37 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../components/ui/popover";
-
 import toast, { Toaster } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setUser } from "../feature/userSlice";
+import { useSelector } from "react-redux";
 
 const notify = () => toast("Logged out Successfully");
 
 const NavBar = () => {
   const accessToken = localStorage.getItem("accessToken");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const user = useSelector(
+    (state: {
+      user: { firstName: string; lastName: string; profileColor: string };
+    }) => state.user
+  );
 
   const handleSignup = () => {
     navigate("/signup");
   };
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
+    dispatch(
+      setUser({
+        firstName: "",
+        lastName: "",
+        profileColor: "",
+      })
+    );
+
     notify();
     setTimeout(() => {
       toast.dismiss();
@@ -57,10 +74,20 @@ const NavBar = () => {
 
       <Popover>
         <PopoverTrigger>
-          <img
-            src="../../public/assets/images/icons8-test-account-64.png"
-            className="profile-picture w-10 sm:w-11 rounded-full"
-          />
+          {user.profileColor ? (
+            <div
+              style={{ backgroundColor: user.profileColor }}
+              className="flex w-8 h-8 md:w-11 md:h-11 rounded-full text-slate-50 justify-center items-center text-base tracking-wide"
+            >
+              {user.firstName.substring(0, 1).toUpperCase()}
+              {user.lastName.substring(0, 1).toUpperCase()}
+            </div>
+          ) : (
+            <img
+              src="../../public/assets/images/icons8-test-account-64.png"
+              className="profile-picture w-10 sm:w-11 rounded-full"
+            />
+          )}
         </PopoverTrigger>
         <PopoverContent className="font-sans text-base font-medium tracking-tight">
           {accessToken ? (
@@ -69,7 +96,7 @@ const NavBar = () => {
                 <div className="pt-0.5">
                   <User size={19} />
                 </div>
-                <div className="text-lg">Hitler Swastik</div>
+                <div className="text-lg">{`${user.firstName} ${user.lastName}`}</div>
               </div>
               <div className="flex felx-row gap-2">
                 <div className="pt-1">
