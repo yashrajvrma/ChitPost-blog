@@ -206,11 +206,11 @@ function BlogCard({
         </div>
 
         <div className="img-component w-1/4 flex justify-center md:pt-2 md:px-3">
-          <div className="md:w-56 w-64 h-48 flex justify-center items-center md:pt-6 pt-0">
+          <div className="md:w-56 w-64 h-48 flex justify-center items-center md:pt-6 pb-6">
             <img
               src={imageUrl}
               alt="blog-preview"
-              className="md:w-full md:max-h-48 object-cover"
+              className="md:w-full md:max-h-44 object-cover"
             />
           </div>
         </div>
