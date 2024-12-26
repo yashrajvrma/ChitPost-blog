@@ -117,7 +117,7 @@ function Signin() {
           </span>
         </div>
         <form onSubmit={handleSubmit(handleRegistration)}>
-          <div className="grid w-full max-w-sm items-center gap-1 mb-3">
+          <div className="grid w-full items-center gap-1 mb-3">
             <Label className="text-lg font-semibold" htmlFor="email">
               Email
             </Label>
@@ -131,7 +131,7 @@ function Signin() {
               <p className="text-red-500 text-sm">{errors.email.message}</p>
             )}
           </div>
-          <div className="grid w-full max-w-sm items-center gap-1 mb-3">
+          <div className="grid w-full items-center gap-1 mb-3">
             <Label className="text-lg font-semibold" htmlFor="password">
               Password
             </Label>
@@ -144,7 +144,7 @@ function Signin() {
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}
           </div>
-          <div className="grid w-full max-w-sm items-center gap-1 mt-2">
+          <div className="grid w-full items-center gap-1 mt-2">
             <Button className="text-md">Sign in</Button>
             <Toaster containerClassName="text-lg font-sans" />
           </div>

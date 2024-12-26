@@ -119,7 +119,7 @@ const NavBar = () => {
                 />
               )}
             </PopoverTrigger>
-            <PopoverContent className="font-sans text-base font-medium sm:text-lg text-base tracking-tight">
+            <PopoverContent className="font-sans text-base font-medium sm:text-lg tracking-tight">
               {accessToken ? (
                 <div className="flex flex-col gap-2 cursor-pointer">
                   <div className="flex flex-row justify-center items-center gap-2">
@@ -135,11 +135,8 @@ const NavBar = () => {
                 </div>
               ) : (
                 <div className="flex flex-row gap-2">
-                  <UserPlus className="mt-1" size={18} />
-                  <div
-                    className="text-lg cursor-pointer"
-                    onClick={handleSignup}
-                  >
+                  <UserPlus className="sm:mt-1 mt-0.5" size={18} />
+                  <div className="cursor-pointer" onClick={handleSignup}>
                     Create account
                   </div>
                 </div>
