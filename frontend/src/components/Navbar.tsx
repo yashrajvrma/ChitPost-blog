@@ -117,10 +117,6 @@ const NavBar = () => {
                   className="sm:w-11 sm:h-11 text-slate-700 w-9 h-9 mt-0.5 sm:mt-0"
                   strokeWidth={0.8}
                 />
-                // <img
-                //   src="../../public/assets/images/icons8-test-account-64.png"
-                //   className="profile-picture w-10 sm:w-11 rounded-full"
-                // />
               )}
             </PopoverTrigger>
             <PopoverContent className="font-sans text-base font-medium sm:text-lg text-base tracking-tight">
