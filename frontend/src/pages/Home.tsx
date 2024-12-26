@@ -1,3 +1,4 @@
+import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Blogs from "./Blogs";
 
@@ -28,17 +29,18 @@ function Home() {
             />
           </div>
         </div>
-        <div className="recent-publications flex flex-col">
+        <div className="recent-publications flex flex-col tracking-tight">
           {" "}
           <div className="sm:text-xl text-lg font-sans flex flex-start font-medium">
             Recent Publications
           </div>
-          <div>Post...</div>
-          <br />
-          <br />
-          <br />
+          <div>
+            <Blogs />
+          </div>
         </div>
-        <div className="footer"></div>
+        <div>
+          <Footer />
+        </div>
       </div>
     </div>
   );
