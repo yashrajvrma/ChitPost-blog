@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import BlogCard from "../components/BlogCard";
 import axios from "axios";
-import NavBar from "../components/Navbar";
 
 interface Blog {
   id: string;
@@ -118,7 +117,6 @@ const extractContentAndMetadata = (jsonContent: string): ParsedContent => {
     let title = "";
     let imageUrl = "";
     let contentNodes: any[] = [];
-    let foundTitle = false;
 
     // Helper function to check if a node is a heading
     const isHeadingNode = (node: any): boolean => {

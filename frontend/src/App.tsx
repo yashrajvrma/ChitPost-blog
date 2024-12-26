@@ -3,10 +3,8 @@ import "./App.css";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Home from "./pages/Home";
-import Blogs from "./pages/Blogs";
 import UserAuth from "./pages/UserAuth";
 import GuestOnly from "./pages/GuestOnly";
-import DetailedBlog from "./pages/DetailedBlog";
 import PublishBlog from "./pages/PublishBlog";
 import PublishedPage from "./pages/PublishedPage";
 

@@ -212,6 +212,7 @@ export default function DetailedBlog() {
     let remainingContent = [];
 
     // Separate the title from the rest of the content
+    // @ts-ignore
     for (let i = 0; i < content.children?.length || 0; i++) {
       const node = content.children?.[i];
       if (node?.type === "tag" && node.name === "h1" && !title) {
@@ -247,6 +248,7 @@ export default function DetailedBlog() {
         <div>
           {" "}
           {remainingContent.map((node, index) => (
+            //@ts-ignore
             <React.Fragment key={index}>{renderNode(node)}</React.Fragment>
           ))}
         </div>

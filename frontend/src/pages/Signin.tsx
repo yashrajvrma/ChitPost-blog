@@ -7,7 +7,6 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "../feature/userSlice";
-import { error } from "console";
 
 interface SigninFormValues {
   email: string;
