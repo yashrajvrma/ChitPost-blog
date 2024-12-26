@@ -10,13 +10,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../feature/userSlice";
 import { persistor } from "../app/store";
 import { RootState } from "../app/store";
+import { Plus } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const notify = () => toast("Logged out Successfully");
-const comingSoon = () => toast("Coming Soon..., I'm coding");
+const comingSoon = () => toast("Coming Soon... I'm coding");
 
 const NavBar = () => {
   const accessToken = localStorage.getItem("accessToken");
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const user = useSelector((state: RootState) => state.user);
@@ -27,6 +30,10 @@ const NavBar = () => {
 
   const handleComingSoon = () => {
     comingSoon();
+  };
+
+  const handleCreate = () => {
+    navigate("/blog/create");
   };
 
   const handleLogout = async () => {
@@ -52,7 +59,7 @@ const NavBar = () => {
   };
 
   return (
-    <div className="flex flex-row justify-between sm:px-10 px-4 h-20  text-slate-100 tracking-tight border-b-2 border-slate-100">
+    <div className="flex flex-row justify-between sm:px-12 px-4 h-24  text-slate-100 tracking-tight border-b-2 border-slate-100">
       <div className="flex flex-row justify-center items-center gap-4 sm:gap-8">
         <Link to="/">
           <div className="logo font-neuePower text-2xl sm:text-5xl text-slate-800 cursor-pointer tracking-tight">
@@ -61,7 +68,7 @@ const NavBar = () => {
         </Link>
         <div
           onClick={handleComingSoon}
-          className="search-bar flex flex-row justify-start items-center rounded-full bg-slate-50 w-36 sm:w-64 sm:h-12 h-9 hover:cursor-pointer"
+          className="search-bar flex flex-row justify-start items-center rounded-full bg-slate-50 w-32 sm:w-64 sm:h-12 h-9 hover:cursor-pointer"
         >
           <div className="sm:pl-4 pl-3 sm:pr-2 pr-1">
             <Search
@@ -78,58 +85,78 @@ const NavBar = () => {
           />
         </div>
       </div>
+      <div className="flex flex-row justify-center items-center">
+        {location.pathname !== "/blog/create" && (
+          <button
+            className="bg-green-500 text-slate-50 font-medium font-sans text-sm  hover:bg-green-600 hover:text-white sm:mr-8 mr-3 flex items-center justify-center rounded-full"
+            onClick={() => handleCreate()}
+          >
+            <span className="sm:hidden p-2 text-slate-50">
+              <Plus className="w-4 h-4" />
+            </span>
+            <span className="hidden sm:block sm:px-7 sm:py-2 sm:text-lg">
+              Create
+            </span>
+          </button>
+        )}
 
-      <Popover>
-        <PopoverTrigger>
-          {user.profileColor ? (
-            <div
-              style={{ backgroundColor: user.profileColor }}
-              className="flex w-8 h-8 md:w-11 md:h-11 rounded-full text-slate-50 justify-center items-center text-base tracking-tighter"
-            >
-              {user.firstName.substring(0, 1).toUpperCase()}
-              {user.lastName.substring(0, 1).toUpperCase()}
-            </div>
-          ) : (
-            <img
-              src="../../public/assets/images/icons8-test-account-64.png"
-              className="profile-picture w-10 sm:w-11 rounded-full"
-            />
-          )}
-        </PopoverTrigger>
-        <PopoverContent className="font-sans text-base font-medium tracking-tight">
-          {accessToken ? (
-            <div className="flex flex-col gap-2 cursor-pointer">
-              <div className="flex flex-row justify-center items-center gap-2">
-                <User size={19} />
-                <div className="text-lg">{`${user.firstName} ${user.lastName
-                  .substring(0, 1)
-                  .toUpperCase()}${user.lastName.substring(1)}`}</div>
-              </div>
-              <div className="flex flex-row items-center gap-2">
-                <LogOut size={18} />
-                <div className="text-lg" onClick={handleLogout}>
-                  Log out
+        <div className="flex items-center">
+          <Popover>
+            <PopoverTrigger>
+              {user.profileColor ? (
+                <div
+                  style={{ backgroundColor: user.profileColor }}
+                  className="flex w-8 h-8 md:w-11 md:h-11 rounded-full text-slate-50 justify-center items-center text-base tracking-tighter"
+                >
+                  {user.firstName.substring(0, 1).toUpperCase()}
+                  {user.lastName.substring(0, 1).toUpperCase()}
                 </div>
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-row gap-2">
-              <UserPlus size={18} />
-              <div className="text-lg cursor-pointer" onClick={handleSignup}>
-                Create account
-              </div>
-            </div>
-          )}
-        </PopoverContent>
-      </Popover>
+              ) : (
+                <img
+                  src="../../public/assets/images/icons8-test-account-64.png"
+                  className="profile-picture w-10 sm:w-11 rounded-full"
+                />
+              )}
+            </PopoverTrigger>
+            <PopoverContent className="font-sans text-base font-medium tracking-tight">
+              {accessToken ? (
+                <div className="flex flex-col gap-2 cursor-pointer">
+                  <div className="flex flex-row justify-center items-center gap-2">
+                    <User size={19} />
+                    <div className="text-lg">{`${user.firstName} ${user.lastName
+                      .substring(0, 1)
+                      .toUpperCase()}${user.lastName.substring(1)}`}</div>
+                  </div>
+                  <div className="flex flex-row items-center gap-2">
+                    <LogOut size={18} />
+                    <div className="text-lg" onClick={handleLogout}>
+                      Log out
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-row gap-2">
+                  <UserPlus size={18} />
+                  <div
+                    className="text-lg cursor-pointer"
+                    onClick={handleSignup}
+                  >
+                    Create account
+                  </div>
+                </div>
+              )}
+            </PopoverContent>
+          </Popover>
+        </div>
+      </div>
       <Toaster
-        containerClassName="text-lg font-sans"
+        containerClassName="sm:text-lg text-sm font-sans px-0"
         position="top-center"
         toastOptions={{
           icon: "😔",
           duration: 1000,
           style: {
-            minWidth: "250px",
+            minWidth: window.innerWidth < 640 ? "100px" : "250px",
           },
         }}
       />

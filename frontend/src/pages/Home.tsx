@@ -1,12 +1,12 @@
-import DetailedBlogCard from "../components/DetailedBlogCard";
 import Navbar from "../components/Navbar";
+import Blogs from "./Blogs";
 
 function Home() {
   return (
-    <div className="text-3xl">
+    <div className="text-3xl mb-20">
       <div>
         <Navbar />
-        {/* <DetailedBlogCard /> */}
+        <Blogs />
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ function App() {
               </GuestOnly>
             }
           />
-          <Route path={"/blogs"} element={<Blogs />} />
+          {/* <Route path={"/blogs"} element={<Blogs />} /> */}
           <Route
             path={"/blog/:id"}
             element={
