@@ -68,17 +68,17 @@ const NavBar = () => {
         </Link>
         <div
           onClick={handleComingSoon}
-          className="search-bar flex flex-row justify-start items-center rounded-full bg-slate-50 w-32 sm:w-52 sm:h-10 h-9 hover:cursor-pointer"
+          className="search-bar flex flex-row justify-start items-center rounded-full bg-slate-50 w-32 sm:w-52 sm:h-10 h-8 hover:cursor-pointer"
         >
           <div className="sm:pl-4 pl-3 sm:pr-1.5 pr-1">
             <Search
-              className="w-5 h-5 sm:w-4 sm:h-4"
+              className="w-4 h-4 sm:w-4 sm:h-4"
               color="grey"
               strokeWidth={1}
             />
           </div>
           <input
-            className="sm:w-44 w-24 sm:text-base text-sm text-slate-800 px-1 focus:outline-none bg-transparent cursor-pointer"
+            className="sm:w-44 w-24 sm:text-base text-sm text-slate-800 px-1 focus:outline-none bg-transparent cursor-pointer "
             type="text"
             placeholder="Search"
             readOnly
@@ -91,7 +91,7 @@ const NavBar = () => {
             className="bg-green-400 text-slate-900 font-normal font-sans text-sm  hover:bg-green-500 hover:text-white sm:mr-6 mr-3 flex items-center justify-center rounded-full"
             onClick={() => handleCreate()}
           >
-            <span className="sm:hidden p-2 text-slate-50">
+            <span className="sm:hidden p-1.5 text-slate-50">
               <Plus className="w-4 h-4" />
             </span>
             <span className="hidden sm:block sm:px-7 sm:py-1.5 sm:text-sm">
@@ -106,7 +106,7 @@ const NavBar = () => {
               {user.profileColor ? (
                 <div
                   style={{ backgroundColor: user.profileColor }}
-                  className="flex w-8 h-8 md:w-8 md:h-8 rounded-full text-slate-50 justify-center items-center text-sm tracking-tighter"
+                  className="flex w-7 h-7 md:w-8 md:h-8 rounded-full text-slate-50 justify-center items-center sm:text-sm text-xs tracking-tighter"
                 >
                   {user.firstName.substring(0, 1).toUpperCase()}
                   {user.lastName.substring(0, 1).toUpperCase()}
