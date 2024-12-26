@@ -9,6 +9,9 @@ function Home() {
   const handleViewMore = () => {
     navigate("/blogs");
   };
+  const handleCreate = () => {
+    navigate("/blog/create");
+  };
   return (
     // <div className="text-3xl mb-20">
     //   <div>
@@ -74,12 +77,26 @@ function Home() {
             "Discover simplicity in blogging. Share your stories, ideas, and
             experiences with the world."
           </div>
-          <div className="flex justify-center w-full px-2 sm:px-0">
+          <div className="flex justify-center w-full px-2">
             <img
-              className="rounded-md w-[90vw] sm:w-full max-w-2xl object-cover"
+              className="rounded-md w-[90vw] sm:w-full max-w-4xl object-cover"
               src="../../public/assets/images/photo-1672746509961-6340a9808970.jpg"
               alt="Blog header"
             />
+          </div>
+        </div>
+        <div className="flex flex-col justify-center items-center font-sans sm:gap-8 gap-5 sm:mt-20 mt-10">
+          <div className="sm:text-4xl text-2xl text-center font-medium tracking-tight leading-tight">
+            Start Your Minimalist Blogging Journey Today!
+          </div>
+          <div>
+            {" "}
+            <button
+              onClick={() => handleCreate()}
+              className="bg-green-400 rounded-full text-slate-800 font-semibold border-2 border-slate-200 hover:bg-green-500 hover:text-slate-100 sm:px-10 px-8 sm:py-3 py-2.5 text-xs sm:text-sm"
+            >
+              Create Chit
+            </button>
           </div>
         </div>
         <div className="recent-publications flex flex-col tracking-tight w-full sm:max-w-none">

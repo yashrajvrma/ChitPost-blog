@@ -3,7 +3,7 @@ import DetailedBlog from "./DetailedBlog";
 
 function PublishedPage() {
   return (
-    <div>
+    <div className="flex flex-col w-full sm:max-w-4xl mx-auto">
       <NavBar />
       <div>
         <div className="flex justify-center px-4">

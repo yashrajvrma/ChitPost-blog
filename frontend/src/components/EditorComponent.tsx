@@ -123,7 +123,7 @@ export default function EditorComponent() {
       // Optionally handle the response
       console.log("Successfully published");
       setTimeout(() => {
-        navigate("/");
+        navigate("/blogs");
       }, 2000);
     } catch (error) {
       console.error("Error publishing content:", error);
@@ -164,9 +164,99 @@ export default function EditorComponent() {
   }, [editorData]);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Editor Container */}
-      <div className="flex-grow">
+    // <div className="flex flex-col min-h-screen">
+    //   {/* Editor Container */}
+    //   <div className="flex-grow">
+    //     <Editor
+    //       className="bg-transparent font-sans text-base h-full"
+    //       defaultValue=""
+    //       disableLocalStorage={true}
+    //       onUpdate={(editor) => {
+    //         setEditorData(editor?.getHTML() || "");
+    //       }}
+    //       handleImageUpload={handleImageUpload}
+    //     />
+    //   </div>
+
+    //   {/* Publish Button */}
+    //   <div className="flex flex-row">
+    //     <button
+    //       onClick={handlePublish}
+    //       className={`flex items-center md:text-lg justify-center md:px-7 md:py-3 px-5 py-2 text-base font-semibold rounded-md transition-colors duration-200 ${
+    //         isPublishable
+    //           ? "bg-green-500 hover:bg-green-600 text-white"
+    //           : "bg-green-500 text-gray-300 hover:cursor-not-allowed"
+    //       }`}
+    //       disabled={!isPublishable}
+    //     >
+    //       Publish
+    //     </button>
+    //     <Toaster containerClassName="text-lg font-sans" />
+    //   </div>
+    // </div>
+    // correct
+    // <div className="relative flex flex-col min-h-screen max-w-4xl mx-auto w-full">
+    //   <div className="flex-grow pb-20">
+    //     <Editor
+    //       className="bg-transparent font-sans text-base h-full"
+    //       defaultValue=""
+    //       disableLocalStorage={true}
+    //       onUpdate={(editor) => {
+    //         setEditorData(editor?.getHTML() || "");
+    //       }}
+    //       handleImageUpload={handleImageUpload}
+    //     />
+    //   </div>
+
+    //   <div className="absolute bottom-0 w-full bg-white border-t border-gray-200">
+    //     <div className="max-w-4xl mx-auto w-full flex justify-end py-4 px-4">
+    //       <button
+    //         onClick={handlePublish}
+    //         className={`flex items-center md:text-lg justify-center md:px-7 md:py-3 px-5 py-2 text-base font-semibold rounded-md transition-colors duration-200 ${
+    //           isPublishable
+    //             ? "bg-green-500 hover:bg-green-600 text-white"
+    //             : "bg-green-500 text-gray-300 hover:cursor-not-allowed"
+    //         }`}
+    //         disabled={!isPublishable}
+    //       >
+    //         Publish
+    //       </button>
+    //       <Toaster containerClassName="text-lg font-sans" />
+    //     </div>
+    //   </div>
+    // </div>
+    // <div className="relative flex flex-col min-h-screen max-w-4xl mx-auto w-full overflow-hidden">
+    //   <div className="flex-grow pb-20">
+    //     <Editor
+    //       className="bg-transparent font-sans text-base h-full bg-red-400"
+    //       defaultValue=""
+    //       disableLocalStorage={true}
+    //       onUpdate={(editor) => {
+    //         setEditorData(editor?.getHTML() || "");
+    //       }}
+    //       handleImageUpload={handleImageUpload}
+    //     />
+    //   </div>
+
+    //   <div className="fixed bottom-0 left-0 w-full bg-white border-gray-200">
+    //     <div className="max-w-4xl mx-auto w-full flex justify-end py-4 px-4">
+    //       <button
+    //         onClick={handlePublish}
+    //         className={`flex items-center md:text-sm justify-center md:px-8 md:py-2 px-5 py-2 text-sm rounded-full transition-colors duration-200 ${
+    //           isPublishable
+    //             ? "bg-green-500 hover:bg-green-600 text-white"
+    //             : "bg-green-500 text-gray-400 hover:cursor-not-allowed"
+    //         }`}
+    //         disabled={!isPublishable}
+    //       >
+    //         Publish
+    //       </button>
+    //       <Toaster containerClassName="text-base font-sans" />
+    //     </div>
+    //   </div>
+    // </div>
+    <div className="relative flex flex-col min-h-screen max-w-4xl mx-auto w-full overflow-hidden">
+      <div className="flex-grow pb-20 overflow-auto">
         <Editor
           className="bg-transparent font-sans text-base h-full"
           defaultValue=""
@@ -178,20 +268,21 @@ export default function EditorComponent() {
         />
       </div>
 
-      {/* Publish Button */}
-      <div className="fixed md:bottom-8 md:right-10 bottom-5 right-5">
-        <button
-          onClick={handlePublish}
-          className={`flex items-center md:text-lg justify-center md:px-7 md:py-3 px-5 py-2 text-base font-semibold rounded-md transition-colors duration-200 ${
-            isPublishable
-              ? "bg-green-500 hover:bg-green-600 text-white"
-              : "bg-green-500 text-gray-300 hover:cursor-not-allowed"
-          }`}
-          disabled={!isPublishable}
-        >
-          Publish
-        </button>
-        <Toaster containerClassName="text-lg font-sans" />
+      <div className="fixed bottom-0 left-0 w-full bg-white border-gray-200">
+        <div className="max-w-4xl mx-auto w-full flex justify-end py-4 px-4">
+          <button
+            onClick={handlePublish}
+            className={`flex items-center md:text-sm justify-center md:px-8 md:py-2 px-5 py-2 text-sm rounded-full transition-colors duration-200 ${
+              isPublishable
+                ? "bg-green-500 hover:bg-green-600 text-white"
+                : "bg-green-500 text-gray-400 hover:cursor-not-allowed"
+            }`}
+            disabled={!isPublishable}
+          >
+            Publish
+          </button>
+          <Toaster containerClassName="text-base font-sans" />
+        </div>
       </div>
     </div>
   );

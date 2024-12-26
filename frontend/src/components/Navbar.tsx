@@ -157,7 +157,7 @@ const NavBar = () => {
         </div>
       </div>
       <Toaster
-        containerClassName="sm:text-lg text-sm font-sans px-0"
+        containerClassName="sm:text-base text-sm font-sans px-0"
         position="top-center"
         toastOptions={{
           icon: "😔",
