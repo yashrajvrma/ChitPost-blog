@@ -52,11 +52,11 @@ const NavBar = () => {
   };
 
   return (
-    <div className="flex flex-row justify-between sm:px-10 px-4 h-20  text-slate-100 font-sans tracking-tight border-b-2 border-slate-100">
+    <div className="flex flex-row justify-between sm:px-10 px-4 h-20  text-slate-100 tracking-tight border-b-2 border-slate-100">
       <div className="flex flex-row justify-center items-center gap-4 sm:gap-8">
         <Link to="/">
-          <div className="logo text-2xl sm:text-4xl font-extrabold text-slate-800 tracking-tighter cursor-pointer">
-            Medium
+          <div className="logo font-neuePower text-2xl sm:text-5xl text-slate-800 cursor-pointer tracking-tight">
+            ChitPost
           </div>
         </Link>
         <div

@@ -8,6 +8,7 @@ export default {
         sans: ['"DM Sans"', "sans-serif"], // Override default sans to DM Sans
         garamond: ["Garamond", "serif"],
         geist: ["Geist", "serif"],
+        neuePower: ["NeuePower", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
