@@ -12,6 +12,7 @@ import { persistor } from "../app/store";
 import { RootState } from "../app/store";
 import { Plus } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { CircleUserRound } from "lucide-react";
 
 const notify = () => toast("Logged out Successfully");
 const comingSoon = () => toast("Coming Soon... I'm coding");
@@ -59,10 +60,10 @@ const NavBar = () => {
   };
 
   return (
-    <div className="flex flex-row justify-between sm:px-12 px-4 h-24  text-slate-100 tracking-tight border-b-2 border-slate-100">
+    <div className="flex flex-row justify-between sm:px-12 px-4 sm:h-20 h-16 text-slate-100 tracking-tight border-b-2 border-slate-100">
       <div className="flex flex-row justify-center items-center gap-4 sm:gap-8">
         <Link to="/">
-          <div className="logo font-neuePower text-2xl sm:text-5xl text-slate-800 cursor-pointer tracking-tight">
+          <div className="logo font-neuePower text-2xl sm:text-4xl text-slate-800 cursor-pointer tracking-tight">
             ChitPost
           </div>
         </Link>
@@ -94,15 +95,15 @@ const NavBar = () => {
             <span className="sm:hidden p-2 text-slate-50">
               <Plus className="w-4 h-4" />
             </span>
-            <span className="hidden sm:block sm:px-7 sm:py-2 sm:text-lg">
+            <span className="hidden sm:block sm:px-8 sm:py-2 sm:text-lg">
               Create
             </span>
           </button>
         )}
 
-        <div className="flex items-center">
+        <div className="flex justify-center items-center">
           <Popover>
-            <PopoverTrigger>
+            <PopoverTrigger className="flex items-center">
               {user.profileColor ? (
                 <div
                   style={{ backgroundColor: user.profileColor }}
@@ -112,31 +113,33 @@ const NavBar = () => {
                   {user.lastName.substring(0, 1).toUpperCase()}
                 </div>
               ) : (
-                <img
-                  src="../../public/assets/images/icons8-test-account-64.png"
-                  className="profile-picture w-10 sm:w-11 rounded-full"
+                <CircleUserRound
+                  className="sm:w-11 sm:h-11 text-slate-700 w-9 h-9 mt-0.5 sm:mt-0"
+                  strokeWidth={0.8}
                 />
+                // <img
+                //   src="../../public/assets/images/icons8-test-account-64.png"
+                //   className="profile-picture w-10 sm:w-11 rounded-full"
+                // />
               )}
             </PopoverTrigger>
-            <PopoverContent className="font-sans text-base font-medium tracking-tight">
+            <PopoverContent className="font-sans text-base font-medium sm:text-lg text-base tracking-tight">
               {accessToken ? (
                 <div className="flex flex-col gap-2 cursor-pointer">
                   <div className="flex flex-row justify-center items-center gap-2">
                     <User size={19} />
-                    <div className="text-lg">{`${user.firstName} ${user.lastName
+                    <div>{`${user.firstName} ${user.lastName
                       .substring(0, 1)
                       .toUpperCase()}${user.lastName.substring(1)}`}</div>
                   </div>
                   <div className="flex flex-row items-center gap-2">
                     <LogOut size={18} />
-                    <div className="text-lg" onClick={handleLogout}>
-                      Log out
-                    </div>
+                    <div onClick={handleLogout}>Log out</div>
                   </div>
                 </div>
               ) : (
                 <div className="flex flex-row gap-2">
-                  <UserPlus size={18} />
+                  <UserPlus className="mt-1" size={18} />
                   <div
                     className="text-lg cursor-pointer"
                     onClick={handleSignup}

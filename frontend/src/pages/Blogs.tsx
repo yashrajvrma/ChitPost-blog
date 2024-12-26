@@ -246,7 +246,7 @@ function Blogs() {
 
   return (
     <div>
-      <div className="flex justify-center items-center mt-10">
+      <div className="flex justify-center items-center sm:mt-10 mt-5">
         <div className="w-full max-w-5xl px-4">
           {blogs.map((blog) => {
             // Use the new extraction function to get title, content, and image URL
