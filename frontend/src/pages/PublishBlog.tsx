@@ -3,7 +3,7 @@ import NavBar from "../components/Navbar";
 
 function PublishBlog() {
   return (
-    <div>
+    <div className="flex flex-col justify-center sm:max-w-4xl max-w-2xl mx-auto">
       <div>
         <NavBar />
       </div>

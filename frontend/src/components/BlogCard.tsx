@@ -173,7 +173,7 @@ function BlogCard({
   console.log("title" + title);
   return (
     <Link to={`/blog/${id}`}>
-      <div className="card-body flex border-b-2 border-slate-200 h-full pt-7 pb-2 gap-3 max-w-xl md:max-w-4xl font-sans tracking-tight cursor-pointer transition-colors duration-200">
+      <div className="card-body flex border-b-2 border-slate-100 h-full pt-7 pb-2 gap-3 max-w-xl md:max-w-4xl font-sans tracking-tight cursor-pointer transition-colors duration-200">
         <div className="text-component w-3/4">
           <div className="headline flex flex-row items-center gap-2">
             <div

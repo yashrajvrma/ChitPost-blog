@@ -223,37 +223,39 @@ blogRouter.get("/:id/view", authMiddleware, async (c) => {
   }
 });
 
-blogRouter.get("/view/bulk", async (c) => {
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
+// blogRouter.get("/view/bulk", async (c) => {
+//   const prisma = new PrismaClient({
+//     datasourceUrl: c.env.DATABASE_URL,
+//   }).$extends(withAccelerate());
 
-  try {
-    const blogs = await prisma.content.findMany({
-      include: {
-        author: {
-          select: {
-            firstName: true,
-            lastName: true,
-            profileColor: true,
-          },
-        },
-      },
-    });
-    // console.log(allBlogs);
-    c.status(200);
-    return c.json({
-      blogs: blogs.length > 0 ? blogs : "No blogs exist",
-      totalBlogs: blogs.length,
-    });
-  } catch (error) {
-    c.status(403);
-    return c.json({
-      success: false,
-      message: "Something went wrong",
-    });
-  }
-});
+//   const param = c.req.param("page");
+
+//   try {
+//     const blogs = await prisma.content.findMany({
+//       include: {
+//         author: {
+//           select: {
+//             firstName: true,
+//             lastName: true,
+//             profileColor: true,
+//           },
+//         },
+//       },
+//     });
+//     // console.log(allBlogs);
+//     c.status(200);
+//     return c.json({
+//       blogs: blogs.length > 0 ? blogs : "No blogs exist",
+//       totalBlogs: blogs.length,
+//     });
+//   } catch (error) {
+//     c.status(403);
+//     return c.json({
+//       success: false,
+//       message: "Something went wrong",
+//     });
+//   }
+// });
 
 blogRouter.post("/publish", authMiddleware, userIdMiddleware, async (c) => {
   console.log("post request found");
@@ -296,5 +298,41 @@ blogRouter.post("/publish", authMiddleware, userIdMiddleware, async (c) => {
       },
       403
     );
+  }
+});
+
+blogRouter.get("/view/bulk", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  // Get the 'take' parameter from the query (optional)
+  const takeParam = Number(c.req.query("take"));
+  const take = takeParam > 0 ? takeParam : undefined; // If 'take' is positive, use it, otherwise return all blogs
+
+  try {
+    const blogs = await prisma.content.findMany({
+      take: take, // Apply the limit if 'take' is provided, otherwise return all blogs
+      include: {
+        author: {
+          select: {
+            firstName: true,
+            lastName: true,
+            profileColor: true,
+          },
+        },
+      },
+    });
+
+    c.status(200);
+    return c.json({
+      blogs: blogs.length > 0 ? blogs : "No blogs exist",
+    });
+  } catch (error) {
+    c.status(403);
+    return c.json({
+      success: false,
+      message: "Something went wrong",
+    });
   }
 });
