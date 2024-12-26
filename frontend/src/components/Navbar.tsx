@@ -12,6 +12,7 @@ import { persistor } from "../app/store";
 import { RootState } from "../app/store";
 
 const notify = () => toast("Logged out Successfully");
+const comingSoon = () => toast("Coming Soon..., I'm coding");
 
 const NavBar = () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -22,6 +23,10 @@ const NavBar = () => {
 
   const handleSignup = () => {
     navigate("/signup");
+  };
+
+  const handleComingSoon = () => {
+    comingSoon();
   };
 
   const handleLogout = async () => {
@@ -54,7 +59,10 @@ const NavBar = () => {
             Medium
           </div>
         </Link>
-        <div className="search-bar flex flex-row justify-start items-center rounded-full bg-slate-50 w-36 sm:w-64 sm:h-12 h-9">
+        <div
+          onClick={handleComingSoon}
+          className="search-bar flex flex-row justify-start items-center rounded-full bg-slate-50 w-36 sm:w-64 sm:h-12 h-9 hover:cursor-pointer"
+        >
           <div className="sm:pl-4 pl-3 sm:pr-2 pr-1">
             <Search
               className="w-5 h-5 sm:w-7 sm:h-7"
@@ -63,9 +71,10 @@ const NavBar = () => {
             />
           </div>
           <input
-            className="sm:w-44 w-24 sm:text-base text-sm text-slate-800 px-1 focus:outline-none bg-transparent"
+            className="sm:w-44 w-24 sm:text-base text-sm text-slate-800 px-1 focus:outline-none bg-transparent cursor-pointer"
             type="text"
             placeholder="Search"
+            readOnly
           />
         </div>
       </div>
@@ -90,13 +99,13 @@ const NavBar = () => {
         <PopoverContent className="font-sans text-base font-medium tracking-tight">
           {accessToken ? (
             <div className="flex flex-col gap-2 cursor-pointer">
-              <div className="flex felx-row gap-2">
+              <div className="flex flex-row justify-center items-center gap-2">
                 <User size={19} />
                 <div className="text-lg">{`${user.firstName} ${user.lastName
                   .substring(0, 1)
                   .toUpperCase()}${user.lastName.substring(1)}`}</div>
               </div>
-              <div className="flex felx-row gap-2">
+              <div className="flex flex-row items-center gap-2">
                 <LogOut size={18} />
                 <div className="text-lg" onClick={handleLogout}>
                   Log out
@@ -104,7 +113,7 @@ const NavBar = () => {
               </div>
             </div>
           ) : (
-            <div className="flex felx-row gap-2">
+            <div className="flex flex-row gap-2">
               <UserPlus size={18} />
               <div className="text-lg cursor-pointer" onClick={handleSignup}>
                 Create account

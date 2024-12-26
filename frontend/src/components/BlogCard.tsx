@@ -173,7 +173,7 @@ function BlogCard({
   console.log("title" + title);
   return (
     <Link to={`/blog/${id}`}>
-      <div className="card-body flex border-b-2 border-slate-200 h-full py-7 gap-3 max-w-xl md:max-w-4xl font-sans tracking-tight cursor-pointer hover:bg-slate-50 transition-colors duration-200">
+      <div className="card-body flex border-b-2 border-slate-200 h-full py-7 gap-3 max-w-xl md:max-w-4xl font-sans tracking-tight cursor-pointer transition-colors duration-200">
         <div className="text-component w-3/4">
           <div className="headline flex flex-row items-center gap-2">
             <div
@@ -189,30 +189,28 @@ function BlogCard({
               {lastName.substring(1)}
             </div>
 
-            <div className="flex pb-2 md:pb-0 text-slate-500 text-sm md:text-base">
-              ·
-            </div>
+            <div className="flex text-slate-500 text-sm md:text-base">·</div>
 
             <div className="date text-slate-500 font-semibold text-sm md:text-base">
               {formatDate(createdAt)}
             </div>
           </div>
 
-          <h2 className="title text-slate-900 text-base md:text-2xl font-bold py-1.5">
+          <div className="title text-slate-900 text-lg md:text-3xl font-black py-1.5">
             {title}
-          </h2>
+          </div>
 
-          <div className="text-slate-600 md:text-lg text-sm line-clamp-3 md:line-clamp-3 font-medium">
+          <div className="text-slate-600 md:text-base text-sm line-clamp-3 md:line-clamp-3 font-medium">
             {content}
           </div>
         </div>
 
-        <div className="img-component w-1/4 flex justify-center md:pt-2">
-          <div className="md:w-56 w-64 flex justify-center items-center pt-6">
+        <div className="img-component w-1/4 flex justify-center md:pt-2 md:px-3">
+          <div className="md:w-56 w-64 h-48 flex justify-center items-center md:pt-6 pt-0">
             <img
               src={imageUrl}
               alt="blog-preview"
-              className="object-cover rounded-lg"
+              className="md:w-full md:max-h-48 object-cover"
             />
           </div>
         </div>
