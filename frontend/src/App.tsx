@@ -9,6 +9,7 @@ import PublishBlog from "./pages/PublishBlog";
 import PublishedPage from "./pages/PublishedPage";
 import AllBlogs from "./pages/AllBlogs";
 import UserAllBlogs from "./pages/UserAllBlogs";
+import DetailedBlogSkeleton from "./components/DetailedBlogSkeleton";
 
 // import Blogs from "./pages/Blogs";
 
@@ -59,6 +60,7 @@ function App() {
               </UserAuth>
             }
           />
+          <Route path={"/blog/ske"} element={<DetailedBlogSkeleton />} />
         </Routes>
       </BrowserRouter>
     </>

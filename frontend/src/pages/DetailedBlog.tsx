@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Copy } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
-import "react-loading-skeleton/dist/skeleton.css";
+import DetailedBlogSkeleton from "../components/DetailedBlogSkeleton";
 
 // Helper function for copy notification
 const notify = () => toast("Copied to Clipboard");
@@ -27,7 +27,7 @@ interface UserProps {
   createdAt: string;
 }
 
-export default function DetailedBlog() {
+function DetailedBlog() {
   // State management for all our component data
   const accessToken = localStorage.getItem("accessToken");
   const { id } = useParams<{ id: string }>();
@@ -51,7 +51,6 @@ export default function DetailedBlog() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
         const response = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/post/${id}/view`,
           {
@@ -64,16 +63,17 @@ export default function DetailedBlog() {
         const { blog } = response.data;
         const parsedContent = JSON.parse(blog.content);
         setContent(parsedContent);
-
-        // Set user profile information
         setUserDetail(blog);
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
       } catch (error) {
         console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
       }
     };
-
     fetchData();
   }, [id, accessToken]);
 
@@ -225,50 +225,44 @@ export default function DetailedBlog() {
 
     return (
       <div className="max-w-xl md:max-w-4xl">
-        <div>{title}</div>
-
-        <div className="headline flex flex-row items-center gap-2 md:mb-16 md:mt-12 py-3 max-w-xl md:max-w-4xl border-b-2 border-slate-100">
-          <div
-            style={{ backgroundColor: userDetail?.author.profileColor }}
-            className="flex w-8 h-8 md:w-12 md:h-12 rounded-full text-neutral-900 justify-center items-center text-center align-middle text-sm tracking-tight"
-          >
-            {userDetail?.author.firstName.substring(0, 1).toUpperCase()}
-            {userDetail?.author.lastName.substring(0, 1).toUpperCase()}
+        {loading ? (
+          <div className="max-w-xl md:max-w-4xl w-full">
+            <DetailedBlogSkeleton />
           </div>
-          <div>
-            <div className="name text-sm md:text-lg text-slate-700 font-semibold">
-              {userDetail?.author.firstName}{" "}
-              {userDetail?.author.lastName.substring(0, 1).toUpperCase()}
-              {userDetail?.author.lastName.substring(1)}
+        ) : (
+          // Show skeleton while loading
+          <>
+            <div>{title}</div>
+            <div className="headline flex flex-row items-center gap-2 md:mb-16 md:mt-12 py-3 max-w-xl md:max-w-4xl border-b-2 border-slate-100">
+              <div
+                style={{ backgroundColor: userDetail?.author.profileColor }}
+                className="flex w-8 h-8 md:w-12 md:h-12 rounded-full text-neutral-900 justify-center items-center text-center align-middle text-sm tracking-tight"
+              >
+                {userDetail?.author.firstName.substring(0, 1).toUpperCase()}
+                {userDetail?.author.lastName.substring(0, 1).toUpperCase()}
+              </div>
+              <div>
+                <div className="name text-sm md:text-lg text-slate-700 font-semibold">
+                  {userDetail?.author.firstName}{" "}
+                  {userDetail?.author.lastName.substring(0, 1).toUpperCase()}
+                  {userDetail?.author.lastName.substring(1)}
+                </div>
+                <div className="date text-slate-500 font-medium text-xs md:text-base tracking-tight">
+                  {formatDate(userDetail?.createdAt || "")}
+                </div>
+              </div>
             </div>
-            <div className="date text-slate-500 font-medium text-xs md:text-base tracking-tight">
-              {formatDate(userDetail?.createdAt || "")}
+            <div>
+              {remainingContent.map((node, index) => (
+                //@ts-ignore
+                <React.Fragment key={index}>{renderNode(node)}</React.Fragment>
+              ))}
             </div>
-          </div>
-        </div>
-        <div>
-          {" "}
-          {remainingContent.map((node, index) => (
-            //@ts-ignore
-            <React.Fragment key={index}>{renderNode(node)}</React.Fragment>
-          ))}
-        </div>
+          </>
+        )}
       </div>
     );
   };
-
-  // Handle loading and error states
-  // if (loading) {
-  //   return (
-  //     <div className="flex justify-center items-center">
-  //       <div className="animate-pulse text-gray-600">Loading content...</div>
-  //     </div>
-  //   );
-  // }
-
-  // if (!content) {
-  //   return <div className="text-center text-red-600">No content available</div>;
-  // }
 
   // Main component render
   return (
@@ -277,3 +271,5 @@ export default function DetailedBlog() {
     </div>
   );
 }
+
+export default DetailedBlog;
