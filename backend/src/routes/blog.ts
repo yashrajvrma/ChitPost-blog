@@ -258,7 +258,7 @@ blogRouter.get("/:id/view", authMiddleware, async (c) => {
 // });
 
 blogRouter.post("/publish", authMiddleware, userIdMiddleware, async (c) => {
-  console.log("post request found");
+  // console.log("post request found");
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());

@@ -32,12 +32,20 @@ function App() {
               </GuestOnly>
             }
           />
-          <Route path={"/blogs"} element={<AllBlogs />} />
+          <Route path={"/blogs/all"} element={<AllBlogs />} />
           <Route
             path={"/blog/:id"}
             element={
               <UserAuth>
                 <PublishedPage />
+              </UserAuth>
+            }
+          />
+          <Route
+            path={"/blog/create"}
+            element={
+              <UserAuth>
+                <PublishBlog />
               </UserAuth>
             }
           />

@@ -178,7 +178,7 @@ function BlogCard({
           <div className="headline flex flex-row items-center gap-2">
             <div
               style={{ backgroundColor: profileColor }}
-              className="flex w-8 h-8 md:w-9 md:h-9 rounded-full text-white justify-center items-center text-sm tracking-wide"
+              className="flex w-8 h-8 md:w-9 md:h-9 rounded-full text-neutral-900 justify-center items-center text-sm tracking-wide"
             >
               {firstName.substring(0, 1).toUpperCase()}
               {lastName.substring(0, 1).toUpperCase()}

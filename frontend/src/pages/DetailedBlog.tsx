@@ -226,21 +226,21 @@ export default function DetailedBlog() {
       <div className="max-w-xl md:max-w-4xl">
         <div>{title}</div>
 
-        <div className="headline flex flex-row items-center gap-2 md:mb-16 md:mt-12 py-3 max-w-xl md:max-w-4xl border-b-2 border-t-2 border-slate-100">
+        <div className="headline flex flex-row items-center gap-2 md:mb-16 md:mt-12 py-3 max-w-xl md:max-w-4xl border-b-2 border-slate-100">
           <div
             style={{ backgroundColor: userDetail?.author.profileColor }}
-            className="flex w-8 h-8 md:w-12 md:h-12 rounded-full text-white justify-center items-center text-sm tracking-tight"
+            className="flex w-8 h-8 md:w-12 md:h-12 rounded-full text-neutral-900 justify-center items-center text-sm tracking-tight"
           >
             {userDetail?.author.firstName.substring(0, 1).toUpperCase()}
             {userDetail?.author.lastName.substring(0, 1).toUpperCase()}
           </div>
           <div>
-            <div className="name text-base md:text-lg text-slate-700 font-semibold">
+            <div className="name text-sm md:text-lg text-slate-700 font-semibold">
               {userDetail?.author.firstName}{" "}
               {userDetail?.author.lastName.substring(0, 1).toUpperCase()}
               {userDetail?.author.lastName.substring(1)}
             </div>
-            <div className="date text-slate-500 font-medium text-sm md:text-base tracking-tight">
+            <div className="date text-slate-500 font-medium text-xs md:text-base tracking-tight">
               {formatDate(userDetail?.createdAt || "")}
             </div>
           </div>

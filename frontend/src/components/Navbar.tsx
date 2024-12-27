@@ -12,6 +12,7 @@ import { persistor } from "../app/store";
 import { RootState } from "../app/store";
 import { Plus } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { PenLine } from "lucide-react";
 
 const notify = () => toast("Logged out Successfully");
 const comingSoon = () => toast("Coming Soon... I'm coding");
@@ -34,6 +35,10 @@ const NavBar = () => {
 
   const handleCreate = () => {
     navigate("/blog/create");
+  };
+
+  const handlePost = () => {
+    navigate("/blogs/all");
   };
 
   const handleLogout = async () => {
@@ -92,7 +97,7 @@ const NavBar = () => {
             onClick={() => handleCreate()}
           >
             <span className="sm:hidden p-1.5 text-slate-50">
-              <Plus className="w-4 h-4" />
+              <Plus className="h-4 w-4" />
             </span>
             <span className="hidden sm:block sm:px-7 sm:py-1.5 sm:text-sm">
               Create
@@ -106,7 +111,7 @@ const NavBar = () => {
               {user.profileColor ? (
                 <div
                   style={{ backgroundColor: user.profileColor }}
-                  className="flex w-7 h-7 md:w-8 md:h-8 rounded-full text-slate-50 justify-center items-center sm:text-sm text-xs tracking-tighter"
+                  className="flex w-7 h-7 md:w-8 md:h-8 rounded-full text-slate-900 justify-center items-center sm:text-sm text-xs tracking-tighter"
                 >
                   {user.firstName.substring(0, 1).toUpperCase()}
                   {user.lastName.substring(0, 1).toUpperCase()}
@@ -120,7 +125,7 @@ const NavBar = () => {
                   xmlns="http://www.w3.org/2000/svg"
                   fill=""
                   viewBox="0 0 24 24"
-                  className="size-10"
+                  className="sm:size-10 size-8"
                 >
                   <path
                     fillRule="evenodd"
@@ -132,15 +137,23 @@ const NavBar = () => {
             </PopoverTrigger>
             <PopoverContent className="font-sans text-sm sm:text-base tracking-tight">
               {accessToken ? (
-                <div className="flex flex-col gap-2 cursor-pointer">
+                <div className="flex flex-col gap-2.5 cursor-pointer">
                   <div className="flex flex-row justify-center items-center gap-2">
                     <User size={14} />
-                    <div>{`${user.firstName} ${user.lastName
+                    <div>{`${
+                      user.firstName
+                    } ${user.lastName
                       .substring(0, 1)
                       .toUpperCase()}${user.lastName.substring(1)}`}</div>
                   </div>
+
+                  <div className="flex flex-row items-center gap-2">
+                    <PenLine size={14} />
+                    <div onClick={handlePost}>Your Post</div>
+                  </div>
                   <div className="flex flex-row items-center gap-2">
                     <LogOut size={14} />
+
                     <div onClick={handleLogout}>Log out</div>
                   </div>
                 </div>
