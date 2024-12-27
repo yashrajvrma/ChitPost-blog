@@ -45,7 +45,9 @@ const NavBar = () => {
   const handleLogout = async () => {
     localStorage.removeItem("accessToken");
 
+    await persistor.purge();
     // Clear user data from Redux state
+  
     dispatch(
       setUser({
         firstName: "",
