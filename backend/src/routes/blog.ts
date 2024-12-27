@@ -75,6 +75,15 @@ blogRouter.get("/all", authMiddleware, userIdMiddleware, async (c) => {
       where: {
         authorId: authorId,
       },
+      include: {
+        author: {
+          select: {
+            firstName: true,
+            lastName: true,
+            profileColor: true,
+          },
+        },
+      },
     });
 
     if (blog.length == 0) {
