@@ -191,7 +191,7 @@ function Signin() {
                   {...register("email", registerOptions.email)}
                   id="email"
                   placeholder="Enter your email"
-                  className="w-full text-sm"
+                  className="w-full"
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm">{errors.email.message}</p>

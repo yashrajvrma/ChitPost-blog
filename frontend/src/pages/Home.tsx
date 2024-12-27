@@ -86,7 +86,7 @@ function Home() {
           </div>
         </div>
         <div className="flex flex-col justify-center items-center font-sans sm:gap-8 gap-5 sm:mt-20 mt-10">
-          <div className="sm:text-4xl text-2xl text-center font-medium tracking-tight leading-tight">
+          <div className="sm:text-4xl text-2xl text-center font-medium tracking-tight">
             Start Your Minimalist Blogging Journey Today!
           </div>
           <div>

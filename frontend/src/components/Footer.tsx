@@ -11,7 +11,7 @@ function Footer() {
       </div>
       <div>
         Made by{" "}
-        <span className="font-semibold text-slate-700">
+        <span className="font-semibold text-slate-900">
           <a href="https://x.com/yashrajvrma" target="blank">
             Yashraj Verma
           </a>

@@ -169,30 +169,40 @@ function Blogs({ take, skeletonNum }: any) {
     <div>
       <div className="flex justify-center items-center sm:mt-5 mt-5">
         <div className="w-full max-w-5xl px-4">
-          {isLoading
-            ? Array.from({ length: skeletonNum }).map((_, index) => (
-                <BlogSkeleton key={index} />
-              ))
-            : blogs.map((blog) => {
-                const { title, content, imageUrl } = extractContentAndMetadata(
-                  blog.content
-                );
-                return (
-                  <BlogCard
-                    key={blog.id}
-                    id={blog.id}
-                    firstName={blog.author.firstName}
-                    lastName={blog.author.lastName}
-                    title={title}
-                    content={content}
-                    profileColor={blog.author.profileColor}
-                    createdAt={blog.createdAt}
-                    imageUrl={
-                      imageUrl || "https://source.unsplash.com/random/400x300"
-                    }
-                  />
-                );
-              })}
+          {isLoading ? (
+            Array.from({ length: skeletonNum }).map((_, index) => (
+              <BlogSkeleton key={index} />
+            ))
+          ) : (
+            <div>
+             
+              <div>
+                {" "}
+                <div>
+                  {blogs.map((blog) => {
+                    const { title, content, imageUrl } =
+                      extractContentAndMetadata(blog.content);
+                    return (
+                      <BlogCard
+                        key={blog.id}
+                        id={blog.id}
+                        firstName={blog.author.firstName}
+                        lastName={blog.author.lastName}
+                        title={title}
+                        content={content}
+                        profileColor={blog.author.profileColor}
+                        createdAt={blog.createdAt}
+                        imageUrl={
+                          imageUrl ||
+                          "https://source.unsplash.com/random/400x300"
+                        }
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

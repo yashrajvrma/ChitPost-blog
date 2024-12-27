@@ -196,25 +196,31 @@ function UsersPost() {
               </div>
             </div>
           ) : (
-            blogs.map((blog) => {
-              // Use the new extraction function to get title, content, and image URL
-              const { title, content, imageUrl } = extractContentAndMetadata(
-                blog.content
-              );
-              return (
-                <BlogCard
-                  key={blog.id}
-                  id={blog.id}
-                  firstName={blog.author.firstName}
-                  lastName={blog.author.lastName}
-                  title={title}
-                  content={content}
-                  profileColor={blog.author.profileColor}
-                  createdAt={blog.createdAt}
-                  imageUrl={imageUrl || ""}
-                />
-              );
-            })
+            <div className="w-full max-w-5xl px-4">
+              <div className="flex flex-col justify-start text-lg text-slate-500 font-medium mt-10">
+                Your Published Posts
+              </div>
+              <div>
+                {blogs.map((blog) => {
+                  // Use the new extraction function to get title, content, and image URL
+                  const { title, content, imageUrl } =
+                    extractContentAndMetadata(blog.content);
+                  return (
+                    <BlogCard
+                      key={blog.id}
+                      id={blog.id}
+                      firstName={blog.author.firstName}
+                      lastName={blog.author.lastName}
+                      title={title}
+                      content={content}
+                      profileColor={blog.author.profileColor}
+                      createdAt={blog.createdAt}
+                      imageUrl={imageUrl || ""}
+                    />
+                  );
+                })}
+              </div>
+            </div>
           )}
         </div>
       </div>

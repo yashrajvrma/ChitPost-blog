@@ -67,7 +67,7 @@ const NavBar = () => {
     <div className="flex flex-row justify-between sm:px-0 px-4 sm:h-24 h-16 text-slate-100 tracking-tight border-b-2 border-slate-100">
       <div className="flex flex-row justify-center items-center gap-4 sm:gap-8">
         <Link to="/">
-          <div className="logo font-sans font-medium text-xl sm:text-3xl text-slate-700 cursor-pointer tracking-tighter">
+          <div className="logo font-sans font-medium text-xl sm:text-3xl text-slate-800 cursor-pointer tracking-tighter">
             ChitPost
           </div>
         </Link>
@@ -140,9 +140,8 @@ const NavBar = () => {
                 <div className="flex flex-col gap-2.5 cursor-pointer">
                   <div className="flex flex-row justify-center items-center gap-2">
                     <User size={14} />
-                    <div>{`${user.firstName} ${user.lastName
-                      .substring(0, 1)
-                      .toUpperCase()}${user.lastName.substring(1)}`}</div>
+                    <div>{`
+                      ${user.firstName} ${user.lastName}`}</div>
                   </div>
 
                   <div className="flex flex-row items-center gap-2">
@@ -168,13 +167,13 @@ const NavBar = () => {
         </div>
       </div>
       <Toaster
-        containerClassName="sm:text-base text-sm font-sans px-0"
+        containerClassName="font-sans px-0 text-xs sm:text-base"
         position="top-center"
         toastOptions={{
           icon: "😔",
           duration: 1000,
           style: {
-            minWidth: window.innerWidth < 640 ? "100px" : "250px",
+            minWidth: "100px",
           },
         }}
       />
