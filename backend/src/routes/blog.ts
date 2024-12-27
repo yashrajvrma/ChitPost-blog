@@ -86,11 +86,12 @@ blogRouter.get("/all", authMiddleware, userIdMiddleware, async (c) => {
       },
     });
 
-    if (blog.length == 0) {
+    if (blog.length === 0) {
       c.status(200);
       return c.json({
         success: false,
         message: "No blogs exist",
+        totalBlogs: blog.length,
       });
     }
 

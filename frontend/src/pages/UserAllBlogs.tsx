@@ -1,13 +1,13 @@
 import NavBar from "../components/Navbar";
-import Blogs from "./Blogs";
+import UsersPost from "./UsersPost";
 
-function AllBlogs() {
+function UserAllBlogs() {
   return (
     <div className="flex flex-col w-full sm:max-w-4xl mx-auto">
       <NavBar />
-      <Blogs take={""} skeletonNum={3} />
+      <UsersPost />
     </div>
   );
 }
 
-export default AllBlogs;
+export default UserAllBlogs;

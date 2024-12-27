@@ -8,6 +8,8 @@ import GuestOnly from "./pages/GuestOnly";
 import PublishBlog from "./pages/PublishBlog";
 import PublishedPage from "./pages/PublishedPage";
 import AllBlogs from "./pages/AllBlogs";
+import UserAllBlogs from "./pages/UserAllBlogs";
+
 // import Blogs from "./pages/Blogs";
 
 function App() {
@@ -32,20 +34,20 @@ function App() {
               </GuestOnly>
             }
           />
-          <Route path={"/blogs/all"} element={<AllBlogs />} />
+          <Route
+            path={"/blogs/all"}
+            element={
+              <UserAuth>
+                <UserAllBlogs />
+              </UserAuth>
+            }
+          />
+          <Route path={"/blogs"} element={<AllBlogs />} />
           <Route
             path={"/blog/:id"}
             element={
               <UserAuth>
                 <PublishedPage />
-              </UserAuth>
-            }
-          />
-          <Route
-            path={"/blog/create"}
-            element={
-              <UserAuth>
-                <PublishBlog />
               </UserAuth>
             }
           />

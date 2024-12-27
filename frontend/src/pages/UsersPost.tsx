@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import BlogCard from "../components/BlogCard";
 import axios from "axios";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import BlogSkeleton from "../components/BlogSkeleton";
 
 interface Blog {
   id: string;
@@ -139,8 +142,10 @@ const extractContentAndMetadata = (jsonContent: string): ParsedContent => {
 function UsersPost() {
   const accessToken = localStorage.getItem("accessToken");
   const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const fetchAllBlogs = async () => {
       try {
         const response = await axios.get(
@@ -154,6 +159,30 @@ function UsersPost() {
         if (response.data.data) {
           setBlogs(response.data.data);
         }
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
+
+        if (blogs.) {
+          return (
+            <div className="flex flex-col justify-center items-center w-full max-w-5xl px-4 mt-10">
+              <div className="flex flex-col tracking-tighter text-center font-semibold text-slate-700 sm:text-lg text-sm mb-14 sb:mb-16">
+                No Post created, Create some...
+              </div>
+              <div className="font-semibold text-slate-800 text-center sm:text-4xl text-2xl font-geist tracking-tighter sm:px-32 sm:pb-8 pb-5">
+                "Don't get it right, just get it written." -{" "}
+                <span className="text-neutral-500">James Thurber</span>
+              </div>
+              <div>
+                <img
+                  className="rounded-md sm:max-w-2xl max-w-xs"
+                  src="../../public/assets/images/EE3CD340-DF8E-4873-B650-5482FC174F65.jpg"
+                  alt="journaling-nature"
+                />
+              </div>
+            </div>
+          );
+        }
       } catch (error) {
         console.error(error);
       }
@@ -164,49 +193,38 @@ function UsersPost() {
 
   return (
     <div>
-      <div className="flex justify-center items-center sm:mt-5 mt-5">
-        {blogs.length === 0 ? (
-          <div className="flex flex-col justify-center items-center w-full max-w-5xl px-4 mt-10">
-            <div className="flex flex-col tracking-tighter text-center font-semibold text-slate-700 sm:text-lg text-sm mb-14 sb:mb-16">
-              No Post created, Create some...
-            </div>
-            <div className="font-semibold text-slate-800 text-center sm:text-4xl text-2xl font-geist tracking-tighter sm:px-32 sm:pb-8 pb-5">
-              "Don't get it right, just get it written." -{" "}
-              <span className="text-neutral-500">James Thurber</span>
-            </div>
+      <div className="flex flex-col justify-center items-center sm:mt-5 mt-5">
+        <div className="w-full max-w-5xl px-4">
+          {loading ? (
+            Array.from({ length: 4 }).map((_, index) => (
+              <BlogSkeleton key={index} />
+            ))
+          ) : (
             <div>
-              <img
-                className="rounded-md sm:max-w-2xl max-w-xs"
-                src="../../public/assets/images/EE3CD340-DF8E-4873-B650-5482FC174F65.jpg"
-                alt="journaling-nature"
-              />
+              {blogs.map((blog) => {
+                // Use the new extraction function to get title, content, and image URL
+                const { title, content, imageUrl } = extractContentAndMetadata(
+                  blog.content
+                );
+                return (
+                  <BlogCard
+                    key={blog.id}
+                    id={blog.id}
+                    firstName={blog.author.firstName}
+                    lastName={blog.author.lastName}
+                    title={title}
+                    content={content}
+                    profileColor={blog.author.profileColor}
+                    createdAt={blog.createdAt}
+                    imageUrl={
+                      imageUrl || "https://source.unsplash.com/random/400x300"
+                    }
+                  />
+                );
+              })}
             </div>
-          </div>
-        ) : (
-          <div className="w-full max-w-5xl px-4">
-            {blogs.map((blog) => {
-              // Use the new extraction function to get title, content, and image URL
-              const { title, content, imageUrl } = extractContentAndMetadata(
-                blog.content
-              );
-              return (
-                <BlogCard
-                  key={blog.id}
-                  id={blog.id}
-                  firstName={blog.author.firstName}
-                  lastName={blog.author.lastName}
-                  title={title}
-                  content={content}
-                  profileColor={blog.author.profileColor}
-                  createdAt={blog.createdAt}
-                  imageUrl={
-                    imageUrl || "https://source.unsplash.com/random/400x300"
-                  }
-                />
-              );
-            })}
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Copy } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
+import "react-loading-skeleton/dist/skeleton.css";
 
 // Helper function for copy notification
 const notify = () => toast("Copied to Clipboard");
@@ -229,7 +230,7 @@ export default function DetailedBlog() {
         <div className="headline flex flex-row items-center gap-2 md:mb-16 md:mt-12 py-3 max-w-xl md:max-w-4xl border-b-2 border-slate-100">
           <div
             style={{ backgroundColor: userDetail?.author.profileColor }}
-            className="flex w-8 h-8 md:w-12 md:h-12 rounded-full text-neutral-900 justify-center items-center text-sm tracking-tight"
+            className="flex w-8 h-8 md:w-12 md:h-12 rounded-full text-neutral-900 justify-center items-center text-center align-middle text-sm tracking-tight"
           >
             {userDetail?.author.firstName.substring(0, 1).toUpperCase()}
             {userDetail?.author.lastName.substring(0, 1).toUpperCase()}
@@ -257,17 +258,17 @@ export default function DetailedBlog() {
   };
 
   // Handle loading and error states
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center">
-        <div className="animate-pulse text-gray-600">Loading content...</div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex justify-center items-center">
+  //       <div className="animate-pulse text-gray-600">Loading content...</div>
+  //     </div>
+  //   );
+  // }
 
-  if (!content) {
-    return <div className="text-center text-red-600">No content available</div>;
-  }
+  // if (!content) {
+  //   return <div className="text-center text-red-600">No content available</div>;
+  // }
 
   // Main component render
   return (

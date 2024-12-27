@@ -25,7 +25,7 @@ const DetailedBlogCard = ({
           {/* Author Info */}
           <div
             style={{ backgroundColor: profileColor }}
-            className="flex w-8 h-8 md:w-11 md:h-11 rounded-full text-slate-50 justify-center items-center text-base tracking-wide"
+            className="flex w-8 h-8 md:w-11 md:h-11 rounded-full text-slate-50 justify-center items-center text-center align-middle text-base tracking-wide"
           >
             {firstName.substring(0, 1).toUpperCase()}
             {lastName.substring(0, 1).toUpperCase()}

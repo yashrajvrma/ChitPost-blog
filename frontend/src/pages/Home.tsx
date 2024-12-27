@@ -104,7 +104,7 @@ function Home() {
             Recent Publications
           </div>
           <div>
-            <Blogs take={4} />
+            <Blogs take={4} skeletonNum={4} />
           </div>
         </div>
         <div className="flex justify-center items-center my-8 sm:my-10 mb-16 sm:mb-20">
