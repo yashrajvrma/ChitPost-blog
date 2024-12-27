@@ -9,16 +9,15 @@ import PublishBlog from "./pages/PublishBlog";
 import PublishedPage from "./pages/PublishedPage";
 import AllBlogs from "./pages/AllBlogs";
 import UserAllBlogs from "./pages/UserAllBlogs";
-import DetailedBlogSkeleton from "./components/DetailedBlogSkeleton";
-
-// import Blogs from "./pages/Blogs";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
+          {/* Home route */}
           <Route path={"/"} element={<Home />} />
+          {/* Auth route */}
           <Route
             path={"/signup"}
             element={
@@ -35,6 +34,9 @@ function App() {
               </GuestOnly>
             }
           />
+
+          {/* Blogs route */}
+          <Route path={"/blogs"} element={<AllBlogs />} />
           <Route
             path={"/blogs/all"}
             element={
@@ -43,7 +45,6 @@ function App() {
               </UserAuth>
             }
           />
-          <Route path={"/blogs"} element={<AllBlogs />} />
           <Route
             path={"/blog/:id"}
             element={
@@ -60,7 +61,6 @@ function App() {
               </UserAuth>
             }
           />
-          <Route path={"/blog/ske"} element={<DetailedBlogSkeleton />} />
         </Routes>
       </BrowserRouter>
     </>
