@@ -30,6 +30,7 @@ const NavBar = () => {
   };
 
   const handleComingSoon = () => {
+    toast.dismiss();
     comingSoon();
   };
 
@@ -52,9 +53,6 @@ const NavBar = () => {
         profileColor: "",
       })
     );
-
-    // Clear persisted state
-    await persistor.purge();
 
     notify();
     setTimeout(() => {
@@ -190,7 +188,7 @@ const NavBar = () => {
         </div>
       </div>
       <Toaster
-        containerClassName="font-sans px-0 text-xs sm:text-base"
+        containerClassName="font-sans px-0 text-sm sm:text-base"
         position="top-center"
         toastOptions={{
           icon: "😔",
