@@ -80,8 +80,8 @@ function Home() {
           <div className="flex justify-center w-full px-2">
             <img
               className="rounded-md w-[90vw] sm:w-full max-w-4xl object-cover"
-              src="../../public/assets/images/photo-1672746509961-6340a9808970.jpg"
-              alt="Blog header"
+              src="https://res.cloudinary.com/dspu4ehu3/image/upload/v1735335735/photo-1672746509961-6340a9808970_qa0ncb.jpg"
+              alt="homePage-img"
             />
           </div>
         </div>

@@ -190,7 +190,7 @@ function UsersPost() {
               <div>
                 <img
                   className="rounded-md sm:max-w-2xl max-w-xs"
-                  src="../../public/assets/images/EE3CD340-DF8E-4873-B650-5482FC174F65.jpg"
+                  src="https://res.cloudinary.com/dspu4ehu3/image/upload/v1735335729/EE3CD340-DF8E-4873-B650-5482FC174F65_m7s8yh.jpg"
                   alt="journaling-nature"
                 />
               </div>

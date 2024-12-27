@@ -137,20 +137,43 @@ const NavBar = () => {
             </PopoverTrigger>
             <PopoverContent className="font-sans text-sm sm:text-base tracking-tight">
               {accessToken ? (
-                <div className="flex flex-col gap-2.5 cursor-pointer">
+                // <div className="flex flex-col justify-start gap-2.5 cursor-pointer">
+                //   <div className="flex flex-row justify-center items-center gap-2">
+                //     <User size={14} />
+                //     <div>{`${user.firstName} ${user.lastName}`}</div>
+                //     {/* <div>{`
+                //       ${user.firstName} ${user.lastName}`}</div> */}
+                //   </div>
+
+                //   <div className="flex flex-row items-center gap-2">
+                //     <PenLine size={14} />
+                //     <div onClick={handlePost}>Your Post</div>
+                //   </div>
+                //   <div className="flex flex-row items-center gap-2">
+                //     <LogOut size={14} />
+
+                //     <div onClick={handleLogout}>Log out</div>
+                //   </div>
+                // </div>
+                <div className="flex flex-col justify-start gap-2.5 cursor-pointer">
                   <div className="flex flex-row justify-center items-center gap-2">
-                    <User size={14} />
-                    <div>{`
-                      ${user.firstName} ${user.lastName}`}</div>
+                    <div className="w-4 flex-shrink-0">
+                      <User size={15} />
+                    </div>
+                    <div>{`${user.firstName} ${user.lastName}`}</div>
                   </div>
 
                   <div className="flex flex-row items-center gap-2">
-                    <PenLine size={14} />
+                    <div className="w-4 flex-shrink-0">
+                      <PenLine size={14} />
+                    </div>
                     <div onClick={handlePost}>Your Post</div>
                   </div>
-                  <div className="flex flex-row items-center gap-2">
-                    <LogOut size={14} />
 
+                  <div className="flex flex-row items-center gap-2">
+                    <div className="w-4 flex-shrink-0">
+                      <LogOut size={14} />
+                    </div>
                     <div onClick={handleLogout}>Log out</div>
                   </div>
                 </div>
