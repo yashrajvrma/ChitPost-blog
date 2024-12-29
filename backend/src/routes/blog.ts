@@ -3,9 +3,6 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { userIdMiddleware } from "../middleware/userIdMiddleware";
-import { createBlogInput, updateBlogInput } from "@hitlerx100/medium-common";
-import html2json from "html2json";
-// import htmlToJson from "html-to-json";
 
 export const blogRouter = new Hono<{
   Bindings: {
@@ -163,7 +160,7 @@ blogRouter.put("/update", authMiddleware, async (c) => {
   }
 });
 
-blogRouter.get("/:id/view", authMiddleware, async (c) => {
+blogRouter.get("/:id/view", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -200,21 +197,7 @@ blogRouter.get("/:id/view", authMiddleware, async (c) => {
         },
       },
     });
-    // const blog = await prisma.post.findFirst({
-    //   where: {
-    //     id: id,
-    //   },
-    //   include: {
-    //     author: {
-    //       select: {
-    //         firstName: true,
-    //         lastName: true,
-    //         profileColor: true,
-    //       },
-    //     },
-    //   },
-    // });
-
+   
     if (!blog) {
       return c.json({ error: "Post not found" }, 404);
     }

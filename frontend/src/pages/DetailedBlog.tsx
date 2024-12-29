@@ -29,7 +29,7 @@ interface UserProps {
 
 function DetailedBlog() {
   // State management for all our component data
-  const accessToken = localStorage.getItem("accessToken");
+  // const accessToken = localStorage.getItem("accessToken");
   const { id } = useParams<{ id: string }>();
   const [content, setContent] = useState<JsonNode | null>(null);
   const [loading, setLoading] = useState(true);
@@ -52,12 +52,7 @@ function DetailedBlog() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/post/${id}/view`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
+          `${import.meta.env.VITE_BASE_URL}/post/${id}/view`
         );
 
         const { blog } = response.data;
@@ -75,7 +70,7 @@ function DetailedBlog() {
       }
     };
     fetchData();
-  }, [id, accessToken]);
+  }, [id]);
 
   // Recursive function to render different types of content nodes
   const renderNode = (node: JsonNode): React.ReactNode => {

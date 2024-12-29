@@ -45,14 +45,7 @@ function App() {
               </UserAuth>
             }
           />
-          <Route
-            path={"/blog/:id"}
-            element={
-              <UserAuth>
-                <PublishedPage />
-              </UserAuth>
-            }
-          />
+          <Route path={"/blog/:id"} element={<PublishedPage />} />
           <Route
             path={"/blog/create"}
             element={
