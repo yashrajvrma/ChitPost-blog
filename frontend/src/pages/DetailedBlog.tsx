@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { Copy } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import DetailedBlogSkeleton from "../components/DetailedBlogSkeleton";
+import { Heart } from "lucide-react";
 
 // Helper function for copy notification
 const notify = () => toast("Copied to Clipboard");
@@ -28,14 +29,18 @@ interface UserProps {
 }
 
 function DetailedBlog() {
+  const accessToken = localStorage.getItem("accessToken");
   // State management for all our component data
   // const accessToken = localStorage.getItem("accessToken");
   const { id } = useParams<{ id: string }>();
   const [content, setContent] = useState<JsonNode | null>(null);
   const [loading, setLoading] = useState(true);
+  const [readTime, setReadTime] = useState(0); // New state for read time
 
   // New state variables for user profile information
   const [userDetail, setUserDetail] = useState<UserProps>();
+  const [totalLike, setTotalLike] = useState();
+  const [alreadyLiked, setAlreadyLiked] = useState(false);
 
   // Helper function to format the date in a readable format
   const formatDate = (dateString: string) => {
@@ -52,13 +57,22 @@ function DetailedBlog() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/post/${id}/view`
+          `http://127.0.0.1:8787/api/v1/post/${id}/view`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken ? accessToken : ""}`,
+            },
+          }
         );
 
-        const { blog } = response.data;
+        const { blog, totalLikes, alreadyLiked } = response.data;
         const parsedContent = JSON.parse(blog.content);
         setContent(parsedContent);
         setUserDetail(blog);
+        calculateReadTime(parsedContent);
+        setTotalLike(totalLikes);
+        setAlreadyLiked(alreadyLiked);
+
         setTimeout(() => {
           setLoading(false);
         }, 500);
@@ -71,6 +85,55 @@ function DetailedBlog() {
     };
     fetchData();
   }, [id]);
+
+  const handleLike = async () => {
+    setAlreadyLiked(!alreadyLiked);
+
+    try {
+      console.log(id);
+      const response = await axios.put(
+        `http://127.0.0.1:8787/api/v1/fav?id=${id}`,
+        {}, // Body is empty since no payload is needed
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (response.data) {
+        const totalLikes = response.data.totalLikes;
+        setTotalLike(totalLikes);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Helper function to count words in the blog content
+  const countWords = (node: JsonNode): number => {
+    if (node.type === "text") {
+      return (
+        node.data?.split(/\s+/).filter((word) => word.length > 0).length || 0
+      );
+    }
+
+    if (node.children) {
+      return node.children.reduce(
+        (count, child) => count + countWords(child),
+        0
+      );
+    }
+
+    return 0;
+  };
+
+  // Calculate the read time based on word count
+  const calculateReadTime = (content: JsonNode) => {
+    const wordCount = countWords(content);
+    const estimatedReadTime = Math.ceil(wordCount / 256); // Assuming 200 words per minute
+    setReadTime(estimatedReadTime);
+  };
 
   // Recursive function to render different types of content nodes
   const renderNode = (node: JsonNode): React.ReactNode => {
@@ -228,7 +291,7 @@ function DetailedBlog() {
           // Show skeleton while loading
           <>
             <div>{title}</div>
-            <div className="headline flex flex-row items-center gap-2 md:mb-16 md:mt-12 py-3 max-w-xl md:max-w-4xl border-b-2 border-slate-100">
+            <div className="headline flex flex-row items-center gap-2 md:mb-16 md:mt-12 py-3 max-w-xl md:max-w-4xl border-slate-100">
               <div
                 style={{ backgroundColor: userDetail?.author.profileColor }}
                 className="flex w-8 h-8 md:w-12 md:h-12 rounded-full text-neutral-900 justify-center items-center text-center align-middle text-sm tracking-tight"
@@ -242,9 +305,30 @@ function DetailedBlog() {
                   {userDetail?.author.lastName.substring(0, 1).toUpperCase()}
                   {userDetail?.author.lastName.substring(1)}
                 </div>
-                <div className="date text-slate-500 font-medium text-xs md:text-base tracking-tight">
+                <div className="date text-slate-500 font-medium text-xs md:text-sm tracking-tight">
                   {formatDate(userDetail?.createdAt || "")}
                 </div>
+              </div>
+            </div>
+            <div className="flex flex-row gap-10 items-center align-middle border-t-2 border-b-2 border-neutral-100 py-5 ">
+              <div className="flex align-middle">
+                <div className="flex  align-middle gap-1.5">
+                  <Heart
+                    onClick={handleLike}
+                    size={22}
+                    className={`text-neutral-900 hover:cursor-pointer ${
+                      alreadyLiked ? "fill-red-500 text-red-500" : ""
+                    }`}
+                    strokeWidth={1.2}
+                  />
+
+                  <div className=" flex align-middle text-base">
+                    {totalLike}
+                  </div>
+                </div>
+              </div>
+              <div className="flex align-middlemb-4 text-slate-600 text-sm md:text-base">
+                {readTime} min read
               </div>
             </div>
             <div>

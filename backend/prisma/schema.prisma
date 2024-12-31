@@ -8,30 +8,36 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(uuid())
+  id           String      @id @default(uuid())
   firstName    String
   lastName     String
-  email        String    @unique
+  email        String      @unique
   password     String
-  profileColor String    @default("#ff2800")
-  post         Post[]
+  profileColor String      @default("#ff2800")
   Content      Content[]
-}
-
-model Post {
-  id          String  @id @default(uuid())
-  title       String
-  description String
-  published   Boolean @default(false)
-  author      User    @relation(fields: [authorId], references: [id])
-  authorId    String
+  Favourite    Favourite[]
 }
 
 model Content {
-  id        String   @id @default(uuid())
+  id        String      @id @default(uuid())
   content   Json
-  published Boolean  @default(false)
-  createdAt DateTime @default(now())
-  author    User     @relation(fields: [authorId], references: [id])
+  published Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  author    User        @relation(fields: [authorId], references: [id])
   authorId  String
+  Favourite Favourite[]
+}
+
+model Favourite {
+  id        String   @id @default(uuid())
+  contentId String
+  userId    String
+  status    Boolean
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  content Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, contentId])
 }

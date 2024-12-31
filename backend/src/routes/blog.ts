@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { userIdMiddleware } from "../middleware/userIdMiddleware";
+import { likeMiddleware } from "../middleware/likeMiddleware";
 
 export const blogRouter = new Hono<{
   Bindings: {
@@ -11,53 +12,9 @@ export const blogRouter = new Hono<{
   };
   Variables: {
     userId: string;
+    existingLike: Boolean;
   };
 }>();
-
-// blogRouter.post("/create", authMiddleware, userIdMiddleware, async (c) => {
-//   const prisma = new PrismaClient({
-//     datasourceUrl: c.env.DATABASE_URL,
-//   }).$extends(withAccelerate());
-
-//   // const body = await c.req.json();
-//   // // zod validation import from npm package hiterx100/medium-common
-//   // const { success } = createBlogInput.safeParse(body);
-//   // if (!success) {
-//   //   c.status(411);
-//   //   return c.json({
-//   //     message: "Inputs are not correct",
-//   //   });
-//   // }
-
-//   const authorId = c.get("userId");
-
-//   try {
-//     // create post and each post will have authorId i.e id of the user creating post
-//     const blog = await prisma.post.create({
-//       data: {
-//         content :
-//         authorId: authorId,
-//       },
-//     });
-
-//     c.status(200);
-//     return c.json({
-//       success: true,
-//       id: blog.id,
-//       message: "Post created successfully",
-//     });
-
-//     // console.log("response");
-
-//     // c.json("ok");
-//   } catch (error) {
-//     c.status(403);
-//     return c.json({
-//       success: false,
-//       message: "Something went wrong",
-//     });
-//   }
-// });
 
 blogRouter.get("/all", authMiddleware, userIdMiddleware, async (c) => {
   const prisma = new PrismaClient({
@@ -160,12 +117,13 @@ blogRouter.put("/update", authMiddleware, async (c) => {
   }
 });
 
-blogRouter.get("/:id/view", async (c) => {
+blogRouter.get("/:id/view", likeMiddleware, async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
   const id = c.req.param("id");
+  const existingLike = c.get("existingLike");
 
   try {
     // check if user has entered correct blog id
@@ -197,15 +155,23 @@ blogRouter.get("/:id/view", async (c) => {
         },
       },
     });
-   
+
     if (!blog) {
       return c.json({ error: "Post not found" }, 404);
     }
+
+    const totalLikes = await prisma.favourite.count({
+      where: {
+        contentId: id,
+      },
+    });
 
     c.status(200);
     return c.json({
       success: true,
       blog: blog,
+      totalLikes: totalLikes,
+      alreadyLiked: existingLike,
     });
   } catch (error) {
     c.status(403);
@@ -215,40 +181,6 @@ blogRouter.get("/:id/view", async (c) => {
     });
   }
 });
-
-// blogRouter.get("/view/bulk", async (c) => {
-//   const prisma = new PrismaClient({
-//     datasourceUrl: c.env.DATABASE_URL,
-//   }).$extends(withAccelerate());
-
-//   const param = c.req.param("page");
-
-//   try {
-//     const blogs = await prisma.content.findMany({
-//       include: {
-//         author: {
-//           select: {
-//             firstName: true,
-//             lastName: true,
-//             profileColor: true,
-//           },
-//         },
-//       },
-//     });
-//     // console.log(allBlogs);
-//     c.status(200);
-//     return c.json({
-//       blogs: blogs.length > 0 ? blogs : "No blogs exist",
-//       totalBlogs: blogs.length,
-//     });
-//   } catch (error) {
-//     c.status(403);
-//     return c.json({
-//       success: false,
-//       message: "Something went wrong",
-//     });
-//   }
-// });
 
 blogRouter.post("/publish", authMiddleware, userIdMiddleware, async (c) => {
   // console.log("post request found");

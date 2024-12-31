@@ -9,7 +9,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  esbuild: {
-    drop: ["console", "debugger"], // Remove console and debugger
-  },
+  // esbuild: {
+  //   drop: ["console", "debugger"],
+  // },
 });
