@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Copy } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import DetailedBlogSkeleton from "../components/DetailedBlogSkeleton";
 import { Heart } from "lucide-react";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 // Helper function for copy notification
 const notify = () => toast("Copied to Clipboard");
@@ -30,12 +31,13 @@ interface UserProps {
 
 function DetailedBlog() {
   const accessToken = localStorage.getItem("accessToken");
-  // State management for all our component data
-  // const accessToken = localStorage.getItem("accessToken");
+  const navigate = useNavigate();
+
   const { id } = useParams<{ id: string }>();
   const [content, setContent] = useState<JsonNode | null>(null);
   const [loading, setLoading] = useState(true);
   const [readTime, setReadTime] = useState(0); // New state for read time
+  const [showLottie, setShowLottie] = useState(false);
 
   // New state variables for user profile information
   const [userDetail, setUserDetail] = useState<UserProps>();
@@ -64,15 +66,14 @@ function DetailedBlog() {
             },
           }
         );
-
-        const { blog, totalLikes, alreadyLiked } = response.data;
-        const parsedContent = JSON.parse(blog.content);
-        setContent(parsedContent);
-        setUserDetail(blog);
-        calculateReadTime(parsedContent);
-        setTotalLike(totalLikes);
-        setAlreadyLiked(alreadyLiked);
-
+        if (response.data) {
+          const parsedContent = JSON.parse(response.data.blog.content);
+          setContent(parsedContent);
+          calculateReadTime(parsedContent);
+          setUserDetail(response.data.blog);
+          setTotalLike(response.data.totalLikes);
+          setAlreadyLiked(response.data.existingLike);
+        }
         setTimeout(() => {
           setLoading(false);
         }, 500);
@@ -87,26 +88,31 @@ function DetailedBlog() {
   }, [id]);
 
   const handleLike = async () => {
-    setAlreadyLiked(!alreadyLiked);
+    if (!accessToken) {
+      navigate("/signin");
+      return;
+    }
 
     try {
-      console.log(id);
       const response = await axios.put(
-        `http://127.0.0.1:8787/api/v1/fav?id=${id}`,
-        {}, // Body is empty since no payload is needed
+        "http://127.0.0.1:8787/api/v1/fav",
+        { blogId: id },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         }
       );
-
-      if (response.data) {
-        const totalLikes = response.data.totalLikes;
-        setTotalLike(totalLikes);
+      console.log(response.data);
+      setTotalLike(response.data.totalLikes);
+      setAlreadyLiked(response.data.existingLikes);
+      // Show animation only if user liked for the first time
+      if (!alreadyLiked) {
+        setShowLottie(true);
+        setTimeout(() => setShowLottie(false), 2000); // Hide animation after 1 second
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -310,24 +316,45 @@ function DetailedBlog() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-row gap-10 items-center align-middle border-t-2 border-b-2 border-neutral-100 py-5 ">
-              <div className="flex align-middle">
-                <div className="flex  align-middle gap-1.5">
-                  <Heart
-                    onClick={handleLike}
-                    size={22}
-                    className={`text-neutral-900 hover:cursor-pointer ${
-                      alreadyLiked ? "fill-red-500 text-red-500" : ""
-                    }`}
-                    strokeWidth={1.2}
-                  />
+            <div className="flex flex-row gap-8 items-center align-middle border-t-2 border-b-2 border-neutral-100">
+              <div
+                onClick={handleLike}
+                className="flex items-center hover:text-red-500 hover:cursor-pointer"
+              >
+                <div
+                  className="relative flex items-center justify-center hover:text-red-500"
+                  style={{ width: "90px", height: "90px" }} // Retain fixed dimensions
+                >
+                  {showLottie ? (
+                    <DotLottieReact
+                      src="https://lottie.host/97b56409-717f-446f-b607-09843d2ad5de/XmrquCv9az.lottie"
+                      style={{ height: "100%", width: "100%" }} // Match parent container dimensions
+                      autoplay
+                    />
+                  ) : (
+                    <Heart
+                      size={24}
+                      fill={alreadyLiked ? "red" : "white"}
+                      className={`hover:cursor-pointer hover:text-red-500 ${
+                        alreadyLiked ? "text-red-500" : "text-neutral-900"
+                      }`}
+                      strokeWidth={1.5}
+                    />
+                  )}
+                </div>
 
-                  <div className=" flex align-middle text-base">
-                    {totalLike}
-                  </div>
+                <div
+                  className="flex items-center text-base hover:text-red-500"
+                  style={{
+                    marginLeft: "-25px", // Move slightly to the left
+                    position: "relative", // Ensure it maintains alignment with the Lottie
+                  }}
+                >
+                  {totalLike}
                 </div>
               </div>
-              <div className="flex align-middlemb-4 text-slate-600 text-sm md:text-base">
+
+              <div className="flex align-middle text-slate-600 text-sm md:text-base">
                 {readTime} min read
               </div>
             </div>

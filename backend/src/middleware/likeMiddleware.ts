@@ -10,6 +10,7 @@ export const likeMiddleware: MiddlewareHandler<{
     JWT_SECRET: string;
   };
   Variables: {
+    userId: string;
     existingLike: Boolean;
   };
 }> = async (c, next) => {
@@ -20,51 +21,32 @@ export const likeMiddleware: MiddlewareHandler<{
   const header = c.req.header("Authorization");
   const token = header?.split(" ")[1];
 
-  const id = c.req.query("id");
+  const blogId = c.req.query("id");
 
   // check if the token exist in the header
-  //   if (!token) {
-  //     throw new HTTPException(401, {
-  //       message: "You are unauthorized",
-  //     });
-  //   }
-
   if (!token) {
     await next();
   }
+
   try {
-    const response = await verify(token as string, c.env.JWT_SECRET);
+    const user = await verify(token as string, c.env.JWT_SECRET);
 
-    // check the response id with the user id
-    if (!response.id) {
-      c.status(403);
-      return c.json({
-        success: false,
-        message: "Invalid access token",
-      });
-    }
+    console.log(user);
 
-    const existingLikes = await prisma.favourite.findFirst({
-      where: {
-        userId: response.id,
-        contentId: id,
-      },
-    });
-
-    if (existingLikes) {
-      c.set("existingLike", true);
+    if (user && typeof user.id === "string") {
+      c.set("userId", user.id);
       await next();
     } else {
-      c.set("existingLike", false);
-      await next();
+      c.status(403);
+      return c.json({
+        message: "You are unauthorized",
+      });
     }
-
-    // await next();
   } catch (error) {
     console.log(error);
 
     throw new HTTPException(403, {
-      message: "You are unauthorized",
+      message: "Sorry something went wrong",
     });
   }
 };

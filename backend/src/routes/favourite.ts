@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { userIdMiddleware } from "../middleware/userIdMiddleware";
+import { likeMiddleware } from "../middleware/likeMiddleware";
 
 export const favRouter = new Hono<{
   Bindings: {
@@ -14,64 +15,90 @@ export const favRouter = new Hono<{
   };
 }>();
 
-favRouter.put("/", authMiddleware, userIdMiddleware, async (c) => {
+favRouter.put("/", likeMiddleware, async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  // const body = await c.req.json();
-  const id = c.req.query("id");
-
+  const { blogId } = await c.req.json();
   const userId = c.get("userId");
 
-  console.log("in");
+  console.log("inside");
+  let alreadyLike;
 
-  if (!id || !userId) {
+  // return if there is no id in body
+  if (!blogId) {
     return c.json(
       {
         success: false,
-        message: "Content ID and User ID are required.",
+        message: "Pls send blog Id",
       },
-      400
+      404
     );
   }
 
   try {
     // check if there are existing likes
-    const existingLikes = await prisma.favourite.findFirst({
+    const existingLikes = await prisma.favourite.findUnique({
       where: {
-        userId: userId,
-        contentId: id,
+        userId_contentId: {
+          contentId: blogId,
+          userId: userId,
+        },
       },
     });
     console.log("exsitinglikes");
-    // if not then add a like
-    if (!existingLikes) {
-      const like = await prisma.favourite.create({
-        data: {
-          contentId: id as string,
-          userId: userId,
-          status: true,
-        },
-      });
-    } else {
-      // if there then it would be a like so delete it because user want to remove his like
+
+    // if there then it would be a like so delete it because user want to remove his like
+
+    if (existingLikes?.id) {
       const deleteRow = await prisma.favourite.delete({
         where: {
-          id: existingLikes?.id,
+          id: existingLikes.id,
         },
       });
+      console.log("deleted");
+
+      alreadyLike = false;
+
+      const totalLikes = await prisma.favourite.count({
+        where: {
+          contentId: blogId,
+        },
+      });
+
+      return c.json(
+        {
+          success: true,
+          existingLikes: alreadyLike,
+          totalLikes: totalLikes,
+        },
+        200
+      );
     }
+
+    // if not then add a like
+    const addLike = await prisma.favourite.create({
+      data: {
+        contentId: blogId,
+        userId: userId,
+        status: true,
+      },
+    });
+    console.log("added like");
+
+    alreadyLike = true;
 
     const totalLikes = await prisma.favourite.count({
       where: {
-        contentId: id,
+        contentId: blogId,
       },
     });
 
     return c.json(
       {
         success: true,
+        existingLikes: alreadyLike,
         totalLikes: totalLikes,
       },
       200
@@ -81,7 +108,7 @@ favRouter.put("/", authMiddleware, userIdMiddleware, async (c) => {
     return c.json(
       {
         success: false,
-        message: "Something went wrong",
+        message: "Something went wrong in fav",
       },
       403
     );

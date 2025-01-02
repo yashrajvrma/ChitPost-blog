@@ -12,7 +12,6 @@ export const blogRouter = new Hono<{
   };
   Variables: {
     userId: string;
-    existingLike: Boolean;
   };
 }>();
 
@@ -122,14 +121,78 @@ blogRouter.get("/:id/view", likeMiddleware, async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  const id = c.req.param("id");
-  const existingLike = c.get("existingLike");
+  const blogId = c.req.param("id");
+  const userId = c.get("userId");
+
+  // return if there is some blog with the id in params
+  if (!blogId) {
+    return c.json(
+      {
+        success: false,
+        message: "Enter blog id",
+      },
+      404
+    );
+  }
+
+  // return total likes on post if user is unauthorized
+  if (!userId) {
+    try {
+      // check if user has entered correct blog id
+      const checkIdExist = await prisma.content.findUnique({
+        where: {
+          id: blogId,
+        },
+      });
+
+      if (!checkIdExist) {
+        c.status(200);
+        return c.json({
+          success: false,
+          message: "No such id exist",
+        });
+      }
+
+      const blog = await prisma.content.findFirst({
+        where: {
+          id: blogId,
+        },
+        include: {
+          author: {
+            select: {
+              firstName: true,
+              lastName: true,
+              profileColor: true,
+            },
+          },
+        },
+      });
+
+      if (!blog) {
+        return c.json({ error: "Post not found" }, 404);
+      }
+
+      const totalLikes = await prisma.favourite.count({
+        where: {
+          contentId: blogId,
+        },
+      });
+
+      c.status(200);
+      return c.json({
+        success: true,
+        blog: blog,
+        totalLikes: totalLikes,
+      });
+    } catch (error) {}
+  }
 
   try {
+    // if user has userId , he is authorized
     // check if user has entered correct blog id
     const checkIdExist = await prisma.content.findUnique({
       where: {
-        id: id,
+        id: blogId,
       },
     });
 
@@ -143,7 +206,7 @@ blogRouter.get("/:id/view", likeMiddleware, async (c) => {
 
     const blog = await prisma.content.findFirst({
       where: {
-        id: id,
+        id: blogId,
       },
       include: {
         author: {
@@ -159,10 +222,16 @@ blogRouter.get("/:id/view", likeMiddleware, async (c) => {
     if (!blog) {
       return c.json({ error: "Post not found" }, 404);
     }
+    const exsitinglikes = await prisma.favourite.findFirst({
+      where: {
+        contentId: blogId,
+        userId: userId,
+      },
+    });
 
     const totalLikes = await prisma.favourite.count({
       where: {
-        contentId: id,
+        contentId: blogId,
       },
     });
 
@@ -170,8 +239,8 @@ blogRouter.get("/:id/view", likeMiddleware, async (c) => {
     return c.json({
       success: true,
       blog: blog,
+      existingLike: exsitinglikes ? true : false,
       totalLikes: totalLikes,
-      alreadyLiked: existingLike,
     });
   } catch (error) {
     c.status(403);
