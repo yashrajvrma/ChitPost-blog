@@ -13,6 +13,17 @@ import { RootState } from "../app/store";
 import { Plus } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { PenLine } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../components/ui/alert-dialog";
 
 const notify = () => toast("Logged out Successfully");
 const comingSoon = () => toast("Coming Soon... I'm coding");
@@ -174,7 +185,31 @@ const NavBar = () => {
                     <div className="w-4 flex-shrink-0">
                       <LogOut size={14} />
                     </div>
-                    <div onClick={handleLogout}>Log out</div>
+                    {/* <div onClick={handleLogout}>Log out</div> */}
+                    {/* dialog btn */}
+                    <AlertDialog>
+                      <AlertDialogTrigger className="hover:text-red-500">Log out</AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you absolutely sure?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. You will get logged
+                            out from this device.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel className="hover:bg-slate-50">Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            className="text-slate-800 bg-red-500 hover:text-slate-100"
+                            onClick={handleLogout}
+                          >
+                            Logout
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </div>
               ) : (
