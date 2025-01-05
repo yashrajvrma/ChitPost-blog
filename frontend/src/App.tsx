@@ -9,6 +9,7 @@ import PublishBlog from "./pages/PublishBlog";
 import PublishedPage from "./pages/PublishedPage";
 import AllBlogs from "./pages/AllBlogs";
 import UserAllBlogs from "./pages/UserAllBlogs";
+import UserBookmarkPage from "./pages/UserBookmarkPage";
 
 function App() {
   return (
@@ -42,6 +43,14 @@ function App() {
             element={
               <UserAuth>
                 <UserAllBlogs />
+              </UserAuth>
+            }
+          />
+          <Route
+            path={"/blogs/saved"}
+            element={
+              <UserAuth>
+                <UserBookmarkPage />
               </UserAuth>
             }
           />
