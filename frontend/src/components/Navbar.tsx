@@ -13,6 +13,8 @@ import { RootState } from "../app/store";
 import { Plus } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { PenLine } from "lucide-react";
+import { IoBookmarksOutline } from "react-icons/io5";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -136,7 +138,7 @@ const NavBar = () => {
               {user.profileColor ? (
                 <div
                   style={{ backgroundColor: user.profileColor }}
-                  className="flex w-7 h-7 md:w-8 md:h-8 rounded-full text-slate-900 justify-center items-center align-middle sm:text-sm text-xs tracking-tighter"
+                  className="flex w-7 h-7 md:w-8 md:h-8 rounded-full text-slate-900 justify-center items-center  align-middle sm:text-sm text-xs tracking-tighter"
                 >
                   {user.firstName.substring(0, 1).toUpperCase()}
                   {user.lastName.substring(0, 1).toUpperCase()}
@@ -163,14 +165,14 @@ const NavBar = () => {
             <PopoverContent className="font-sans text-sm sm:text-base tracking-tight">
               {accessToken ? (
                 <div className="flex flex-col justify-start gap-2.5 cursor-pointer">
-                  <div className="flex flex-row justify-center items-center gap-2">
+                  <div className="flex flex-row justify-center hover:cursor-text text-slate-600 hover:text-neutral-900 items-center gap-2">
                     <div className="w-4 flex-shrink-0">
                       <User size={16} />
                     </div>
                     <div>{`${user.firstName} ${user.lastName}`}</div>
                   </div>
 
-                  <div className="flex flex-row items-center gap-2">
+                  <div className="flex flex-row items-center gap-2 text-slate-600 hover:text-neutral-900">
                     <div className="w-4 flex-shrink-0">
                       {/* <PenLine size={14} /> */}
                       <img src="../../public/assets/images/icons8-article-32.png" />
@@ -178,16 +180,17 @@ const NavBar = () => {
                     <div onClick={handlePost}>Your Post</div>
                   </div>
 
-                  <div className="flex flex-row items-center gap-2">
+                  <div className="flex flex-row items-center gap-2 text-slate-600 hover:text-neutral-900">
                     <div className="w-4 flex-shrink-0">
                       {/* <PenLine size={14} /> */}
-                      <img src="../../public/assets/images/icons8-article-32.png" />
+                      {/* <img src="../../public/assets/images/icons8-article-32.png" /> */}
+                      <IoBookmarksOutline />
                     </div>
                     <div onClick={handleSavePost}>Saved Post</div>
                   </div>
 
-                  <div className="flex flex-row items-center gap-2">
-                    <div className="w-4 flex-shrink-0">
+                  <div className="flex flex-row items-center gap-2 text-slate-600 ">
+                    <div className="w-4 flex-shrink-0 hover:text-neutral-900">
                       <LogOut size={14} />
                     </div>
                     {/* <div onClick={handleLogout}>Log out</div> */}

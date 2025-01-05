@@ -1,11 +1,11 @@
 import NavBar from "../components/Navbar";
-import UserPost from "../components/UserPost";
+import UserBookmarkedPost from "../components/UserBookmarkedPost";
 
 function UserBookmarkPage() {
   return (
     <div className="flex flex-col w-full sm:max-w-4xl mx-auto">
       <NavBar />
-      <UserPost />
+      <UserBookmarkedPost />
     </div>
   );
 }

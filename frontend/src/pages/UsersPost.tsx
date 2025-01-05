@@ -171,7 +171,7 @@ function UsersPost() {
 
   return (
     <div>
-      <div className="flex flex-col justify-center items-center sm:mt-5 mt-5">
+      <div className="flex flex-col justify-center items-center sm:mt-5 mt-3">
         <div className="w-full max-w-5xl px-4">
           {loading ? (
             Array.from({ length: 4 }).map((_, index) => (
@@ -197,7 +197,7 @@ function UsersPost() {
             </div>
           ) : (
             <div className="w-full max-w-5xl px-4">
-              <div className="flex flex-col justify-start text-lg text-slate-500 font-medium mt-10">
+              <div className="flex flex-col justify-start sm:text-5xl text-3xl  text-slate-900 font-semibold sm:mt-10 mt-7 sm:mb-5">
                 Your Published Posts
               </div>
               <div>

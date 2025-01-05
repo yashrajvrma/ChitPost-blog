@@ -16,7 +16,7 @@ function BlogSkeleton() {
 
         <div className="content w-full h-4 bg-slate-200 rounded-md mt-2"></div>
         <div className="content w-3/4 h-4 bg-slate-200 rounded-md mt-2"></div>
-        <div className="content w-2/4 h-4 bg-slate-200 rounded-md mt-2"></div>
+        {/* <div className="content w-2/4 h-4 bg-slate-200 rounded-md mt-2"></div> */}
       </div>
 
       <div className="img-component w-1/4 flex justify-center md:pt-2 md:px-3">

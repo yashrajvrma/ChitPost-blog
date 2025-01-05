@@ -162,7 +162,7 @@ function Blogs({ take, skeletonNum }: any) {
     };
 
     fetchAllBlogs();
-    setTimeout(() => setIsLoading(false), 100);
+    setTimeout(() => setIsLoading(false), 250);
   }, []);
 
   return (
@@ -175,9 +175,7 @@ function Blogs({ take, skeletonNum }: any) {
             ))
           ) : (
             <div>
-             
               <div>
-                {" "}
                 <div>
                   {blogs.map((blog) => {
                     const { title, content, imageUrl } =
