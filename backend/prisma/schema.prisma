@@ -16,6 +16,7 @@ model User {
   profileColor String      @default("#ff2800")
   Content      Content[]
   Favourite    Favourite[]
+  SavedPost    SavedPost[]
 }
 
 model Content {
@@ -26,6 +27,7 @@ model Content {
   author    User        @relation(fields: [authorId], references: [id])
   authorId  String
   Favourite Favourite[]
+  SavedPost SavedPost[]
 }
 
 model Favourite {
@@ -37,6 +39,19 @@ model Favourite {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  content Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, contentId])
+}
+
+model SavedPost {
+  id        String   @id @default(uuid())
+  contentId String
+  userId    String
+  saved     Boolean
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   content Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
 
   @@unique([userId, contentId])
