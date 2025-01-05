@@ -1,4 +1,3 @@
-import { use } from "hono/jsx";
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
@@ -24,20 +23,19 @@ blogRouter.get("/all/saved", authMiddleware, userIdMiddleware, async (c) => {
   const userId = c.get("userId");
 
   try {
-    // get all the post of the user by their author Id
+    // Fetch all saved posts for the user with necessary details
     const savedBlog = await prisma.savedPost.findMany({
-      where: {
-        userId: userId,
-      },
-      include: {
+      where: { userId },
+      select: {
         content: {
           select: {
             id: true,
             content: true,
+            published: true,
             createdAt: true,
-            authorId: true,
             author: {
               select: {
+                id: true,
                 firstName: true,
                 lastName: true,
                 profileColor: true,
@@ -48,30 +46,45 @@ blogRouter.get("/all/saved", authMiddleware, userIdMiddleware, async (c) => {
       },
     });
 
-    if (savedBlog.length === 0) {
-      c.status(200);
+    // Transform the response to match the desired structure
+    const formattedResponse = savedBlog.map((savedPost) => {
+      const { content } = savedPost;
+      return {
+        id: content.id,
+        content: content.content,
+        published: content.published,
+        createdAt: content.createdAt,
+        authorId: content.author.id,
+        author: {
+          firstName: content.author.firstName,
+          lastName: content.author.lastName,
+          profileColor: content.author.profileColor,
+        },
+      };
+    });
+
+    if (formattedResponse.length === 0) {
       return c.json({
         success: false,
         message: "No blogs exist",
-        totalBlogs: savedBlog.length,
+        totalBlogs: 0,
       });
     }
 
-    return c.json(
-      {
-        success: true,
-        data: savedBlog,
-        totalBlogs: savedBlog.length,
-      },
-      200
-    );
+    return c.json({
+      success: true,
+      data: formattedResponse,
+      totalBlogs: formattedResponse.length,
+      message: "Saved Blog fetched successfully",
+    });
   } catch (error) {
+    console.error("Error fetching saved posts:", error);
     return c.json(
       {
         success: false,
         message: "Something went wrong",
       },
-      403
+      500
     );
   }
 });

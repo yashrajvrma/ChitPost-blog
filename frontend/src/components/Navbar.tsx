@@ -64,7 +64,7 @@ const NavBar = () => {
     navigate("/blogs/all");
   };
   const handleSavePost = () => {
-    navigate("/blogs/saved");
+    navigate("/blogs/all/saved");
   };
 
   const handleLogout = async () => {
