@@ -47,7 +47,7 @@ function App() {
             }
           />
           <Route
-            path={"/blogs/saved"}
+            path={"/blogs/all/saved"}
             element={
               <UserAuth>
                 <UserBookmarkPage />

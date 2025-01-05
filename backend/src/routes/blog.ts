@@ -16,6 +16,65 @@ export const blogRouter = new Hono<{
   };
 }>();
 
+blogRouter.get("/all/saved", authMiddleware, userIdMiddleware, async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const userId = c.get("userId");
+
+  try {
+    // get all the post of the user by their author Id
+    const savedBlog = await prisma.savedPost.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        content: {
+          select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            authorId: true,
+            author: {
+              select: {
+                firstName: true,
+                lastName: true,
+                profileColor: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (savedBlog.length === 0) {
+      c.status(200);
+      return c.json({
+        success: false,
+        message: "No blogs exist",
+        totalBlogs: savedBlog.length,
+      });
+    }
+
+    return c.json(
+      {
+        success: true,
+        data: savedBlog,
+        totalBlogs: savedBlog.length,
+      },
+      200
+    );
+  } catch (error) {
+    return c.json(
+      {
+        success: false,
+        message: "Something went wrong",
+      },
+      403
+    );
+  }
+});
 blogRouter.get("/all", authMiddleware, userIdMiddleware, async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
