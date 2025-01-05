@@ -10,8 +10,17 @@ import {
 const handleClick = () => {
   const url = window.location.href;
   navigator.clipboard.writeText(url);
+  console.log("from sharebtn");
   toast.dismiss();
-  toast("Copied to Clipboard!", { id: "copy-toast-a" });
+  // toast("Copied to Clipboard!", { id: "copy-toast-a" });
+  toast("Copied to Clipboard!", {
+    icon: "✅",
+    duration: 2500,
+    style: {
+      minWidth: "100px",
+    },
+    id: "copy-toast-a",
+  });
 };
 
 function ShareBtn() {

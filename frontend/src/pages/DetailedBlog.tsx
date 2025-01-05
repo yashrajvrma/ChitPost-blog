@@ -6,11 +6,11 @@ import toast, { Toaster } from "react-hot-toast";
 import DetailedBlogSkeleton from "../components/DetailedBlogSkeleton";
 import { Heart } from "lucide-react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { Bookmark } from "lucide-react";
 import ShareBtn from "../components/ShareBtn";
+import BookMark from "../components/BookMark";
 
 // Helper function for copy notification
-const notify = () => toast("Copied to Clipboard!");
+// const notify = () => toast("Copied to Clipboard!");
 
 // Type definitions for our data structures
 type JsonNode = {
@@ -45,6 +45,7 @@ function DetailedBlog() {
   const [userDetail, setUserDetail] = useState<UserProps>();
   const [totalLike, setTotalLike] = useState();
   const [alreadyLiked, setAlreadyLiked] = useState(false);
+  const [alreadySaved, setAlreadySaved] = useState(false);
 
   // Helper function to format the date in a readable format
   const formatDate = (dateString: string) => {
@@ -75,6 +76,7 @@ function DetailedBlog() {
           setUserDetail(response.data.blog);
           setTotalLike(response.data.totalLikes);
           setAlreadyLiked(response.data.existingLike);
+          setAlreadySaved(response.data.existingBookmark);
         }
         setTimeout(() => {
           setLoading(false);
@@ -232,9 +234,11 @@ function DetailedBlog() {
             <div className="relative rounded-lg md:px-2 pt-0.5 my-4 bg-slate-50">
               <div
                 onClick={() => {
+                  console.log("from detail");
+
                   navigator.clipboard.writeText(codeText);
-                  notify();
-                  // toast.dismiss();
+                  toast.dismiss(); // Clear any existing toasts
+                  toast("Copied to Clipboard!", { id: "copy-toast-b" });
                 }}
                 className="absolute top-2 right-4 pt-1 hover:cursor-pointer"
               >
@@ -246,13 +250,13 @@ function DetailedBlog() {
                 </code>
               </pre>
               <Toaster
-                containerClassName="text-base font-sans"
+                containerClassName="font-sans px-0 text-sm sm:text-base"
                 position="top-center"
                 toastOptions={{
                   icon: "✅",
                   duration: 2500,
                   style: {
-                    minWidth: "200px",
+                    minWidth: "100px",
                   },
                 }}
               />
@@ -303,7 +307,7 @@ function DetailedBlog() {
             <div className="headline flex flex-row items-center gap-2.5 sm:mb-2 mb-3 md:mt-1 py-1 max-w-xl md:max-w-4xl border-slate-100">
               <div
                 style={{ backgroundColor: userDetail?.author.profileColor }}
-                className="flex w-9 h-9 sm:w-12 sm:h-12 rounded-full text-neutral-100 justify-center items-center text-center align-middle text-md tracking-tight"
+                className="flex w-9 h-9 sm:w-12 sm:h-12 rounded-full text-neutral-100 justify-center items-center text-center align-middle sm:text-md text-sm tracking-tight"
               >
                 {userDetail?.author.firstName.substring(0, 1).toUpperCase()}
                 {userDetail?.author.lastName.substring(0, 1).toUpperCase()}
@@ -319,15 +323,15 @@ function DetailedBlog() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-row justify-between px-3 gap-8 items-center align-middle border-t-2 border-b-2 border-neutral-100">
-              <div className="flex flex-row items-center align-middle gap-7">
+            <div className="flex flex-row justify-between pr-4 font-geist gap-8 items-center align-middle border-t-2 border-b-2 border-neutral-100">
+              {/* <div className="flex flex-row items-center align-middle sm:gap-7 gap-4">
                 <div
                   onClick={handleLike}
                   className="flex items-center hover:text-red-500 hover:cursor-pointer"
                 >
                   <div
                     className="relative flex items-center justify-center hover:text-red-500"
-                    style={{ width: "20px", height: "50px" }} // Retain fixed dimensions
+                    style={{ width: "70px", height: "70px" }} // Retain fixed dimensions
                   >
                     {showLottie ? (
                       <DotLottieReact
@@ -337,9 +341,9 @@ function DetailedBlog() {
                       />
                     ) : (
                       <Heart
-                        size={20}
+                        size={18}
                         fill={alreadyLiked ? "red" : "white"}
-                        className={`hover:cursor-pointer hover:text-red-500 ${
+                        className={`hover:cursor-pointer ${
                           alreadyLiked ? "text-red-500" : "text-neutral-600"
                         }`}
                         strokeWidth={1.3}
@@ -348,10 +352,56 @@ function DetailedBlog() {
                   </div>
 
                   <div
-                    className="flex items-center sm:text-base text-sm text-neutral-600 hover:text-red-500"
+                    className="flex items-center sm:text-base text-sm text-neutral-600 hover:text-red-500 
+             ml-[-20px] sm:ml-[-15px]"
                     style={{
-                      marginLeft: "8px", // Move slightly to the left
-                      position: "relative", // Ensure it maintains alignment with the Lottie
+                      position: "relative", // Ensure alignment with the Lottie animation
+                    }}
+                  >
+                    {totalLike}
+                  </div>
+                </div>
+
+                <div className="flex align-middle text-slate-600 hover:cursor-text sm:text-base text-sm">
+                  {readTime} min read
+                </div>
+              </div> */}
+              <div className="flex flex-row items-center align-middle sm:gap-7 gap-4">
+                <div className="flex items-center ">
+                  <div
+                    onClick={handleLike}
+                    className="relative flex items-center justify-center hover:text-red-500 overflow-hidden hover:cursor-pointer" // Add overflow-hidden to clip excess animation
+                    style={{
+                      width: "60px", // Reduce width
+                      height: "60px", // Reduce height
+                    }}
+                  >
+                    {showLottie ? (
+                      <DotLottieReact
+                        src="https://lottie.host/97b56409-717f-446f-b607-09843d2ad5de/XmrquCv9az.lottie"
+                        style={{
+                          height: "150%", // Scale the animation height to make it fit better
+                          width: "150%", // Scale the animation width proportionally
+                        }}
+                        autoplay
+                      />
+                    ) : (
+                      <Heart
+                        size={17}
+                        fill={alreadyLiked ? "red" : "white"}
+                        className={`hover:cursor-pointer  ${
+                          alreadyLiked ? "text-red-500" : "text-neutral-600"
+                        }`}
+                        strokeWidth={1.3}
+                      />
+                    )}
+                  </div>
+
+                  <div
+                    className="flex items-center hover:cursor-pointer sm:text-base text-sm text-neutral-500 hover:text-neutral-900 
+             ml-[-15px] sm:ml-[-15px]"
+                    style={{
+                      position: "relative", // Ensure alignment with the Lottie animation
                     }}
                   >
                     {totalLike}
@@ -362,10 +412,12 @@ function DetailedBlog() {
                   {readTime} min read
                 </div>
               </div>
-              <div className="flex flex-row gap-7">
-                <div className="bookmark flex text-neutral-600 hover:text-slate-900 hover:cursor-pointer">
+
+              <div className="flex flex-row sm:gap-7 gap-4">
+                {/* <div className="bookmark flex text-neutral-600 hover:text-slate-900 hover:cursor-pointer">
                   <Bookmark size={20} strokeWidth={1.3} />
-                </div>
+                </div> */}
+                <BookMark saved={alreadySaved} id={id || ""} />
                 <ShareBtn />
               </div>
             </div>

@@ -17,24 +17,24 @@ function Home() {
       <Navbar />
       <div className="homepage flex flex-col justify-center gap-6 sm:gap-10 px-0 sm:px-0 max-w-[95vw] sm:max-w-4xl mt-8 sm:mt-16 mx-auto">
         <div className="container flex flex-col justify-center items-center">
-          <div className="flex flex-col heading text-3xl sm:text-7xl gap-1 sm:gap-3 font-geist py-6 sm:py-10 tracking-tighter text-center">
+          <div className="heading flex flex-col font-medium text-4xl text-neutral-700 sm:text-7xl gap-1 sm:gap-3 font-geist py-6 sm:py-10 tracking-tighter text-center">
             <div>ChitPost - a Minimalist</div>
             <div>Personal Blog Site.</div>
           </div>
-          <div className="text-sm sm:text-xl font-medium font-sans tracking-tight pb-6 sm:pb-10 text-center px-2">
+          <div className="text-sm sm:text-xl  font-normal font-sans pb-6 sm:pb-10 text-center px-2">
             "Discover simplicity in blogging. Share your stories, ideas, and
             experiences with the world."
           </div>
           <div className="flex justify-center w-full px-2">
             <img
-              className="rounded-md w-[90vw] sm:w-full max-w-4xl object-cover"
+              className="rounded-lg w-[90vw] sm:w-full max-w-4xl object-cover"
               src="https://res.cloudinary.com/dspu4ehu3/image/upload/v1735335735/photo-1672746509961-6340a9808970_qa0ncb.jpg"
               alt="homePage-img"
             />
           </div>
         </div>
         <div className="flex flex-col justify-center items-center font-sans sm:gap-8 gap-5 sm:mt-20 mt-10">
-          <div className="sm:text-4xl text-2xl text-center font-medium tracking-tight">
+          <div className="sm:text-4xl text-2xl text-center font-medium text-neutral-700 tracking-tight sm:tracking-normal">
             Start Your Minimalist Blogging Journey Today!
           </div>
           <div>

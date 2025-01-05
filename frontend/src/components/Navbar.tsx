@@ -26,7 +26,18 @@ import {
 } from "../components/ui/alert-dialog";
 
 const notify = () => toast("Logged out Successfully");
-const comingSoon = () => toast("Coming Soon... I'm coding");
+// const comingSoon = () => toast("Coming Soon... I'm coding");
+const comingSoon = () => {
+  toast.dismiss();
+  toast("Coming Soon", {
+    icon: "😊",
+    duration: 2500,
+    style: {
+      minWidth: "100px",
+    },
+    id: "copy-toast-c",
+  });
+};
 
 const NavBar = () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -51,6 +62,9 @@ const NavBar = () => {
 
   const handlePost = () => {
     navigate("/blogs/all");
+  };
+  const handleSavePost = () => {
+    navigate("/blogs/saved");
   };
 
   const handleLogout = async () => {
@@ -158,9 +172,18 @@ const NavBar = () => {
 
                   <div className="flex flex-row items-center gap-2">
                     <div className="w-4 flex-shrink-0">
-                      <PenLine size={14} />
+                      {/* <PenLine size={14} /> */}
+                      <img src="../../public/assets/images/icons8-article-32.png" />
                     </div>
                     <div onClick={handlePost}>Your Post</div>
+                  </div>
+
+                  <div className="flex flex-row items-center gap-2">
+                    <div className="w-4 flex-shrink-0">
+                      {/* <PenLine size={14} /> */}
+                      <img src="../../public/assets/images/icons8-article-32.png" />
+                    </div>
+                    <div onClick={handleSavePost}>Saved Post</div>
                   </div>
 
                   <div className="flex flex-row items-center gap-2">
