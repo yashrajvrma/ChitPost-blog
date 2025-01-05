@@ -12,7 +12,6 @@ import { persistor } from "../app/store";
 import { RootState } from "../app/store";
 import { Plus } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import { PenLine } from "lucide-react";
 import { IoBookmarksOutline } from "react-icons/io5";
 
 import {

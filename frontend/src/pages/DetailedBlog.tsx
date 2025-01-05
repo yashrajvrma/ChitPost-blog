@@ -62,7 +62,7 @@ function DetailedBlog() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8787/api/v1/post/${id}/view`,
+          `${import.meta.env.VITE_BASE_URL}/post/${id}/view`,
           {
             headers: {
               Authorization: `Bearer ${accessToken ? accessToken : ""}`,
@@ -90,7 +90,6 @@ function DetailedBlog() {
     };
     fetchData();
   }, [id]);
-
   const handleLike = async () => {
     if (!accessToken) {
       navigate("/signin");
@@ -99,7 +98,7 @@ function DetailedBlog() {
 
     try {
       const response = await axios.put(
-        "http://127.0.0.1:8787/api/v1/fav",
+        `${import.meta.env.VITE_BASE_URL}/fav`,
         { blogId: id },
         {
           headers: {

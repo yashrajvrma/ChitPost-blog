@@ -137,6 +137,7 @@ const extractContentAndMetadata = (jsonContent: string): ParsedContent => {
     };
   }
 };
+
 function UserBookmarkedPost() {
   const accessToken = localStorage.getItem("accessToken");
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -147,7 +148,7 @@ function UserBookmarkedPost() {
     const fetchAllBlogs = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8787/api/v1/post/all/saved",
+          `${import.meta.env.VITE_BASE_URL}/post/all/saved`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,

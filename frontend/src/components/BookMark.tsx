@@ -22,7 +22,7 @@ function BookMark({ saved, id }: Saved) {
 
     try {
       const response = await axios.put(
-        "http://127.0.0.1:8787/api/v1/save",
+        `${import.meta.env.VITE_BASE_URL}/save`,
         { blogId: id },
         {
           headers: {
