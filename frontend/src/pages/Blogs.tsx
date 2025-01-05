@@ -162,7 +162,7 @@ function Blogs({ take, skeletonNum }: any) {
     };
 
     fetchAllBlogs();
-    setTimeout(() => setIsLoading(false), 1000);
+    setTimeout(() => setIsLoading(false), 100);
   }, []);
 
   return (

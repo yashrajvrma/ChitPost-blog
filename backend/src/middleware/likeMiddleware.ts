@@ -11,7 +11,7 @@ export const likeMiddleware: MiddlewareHandler<{
   };
   Variables: {
     userId: string;
-    existingLike: Boolean;
+    existingLike: boolean;
   };
 }> = async (c, next) => {
   const prisma = new PrismaClient({
@@ -21,17 +21,14 @@ export const likeMiddleware: MiddlewareHandler<{
   const header = c.req.header("Authorization");
   const token = header?.split(" ")[1];
 
-  const blogId = c.req.query("id");
-
-  // check if the token exist in the header
-  if (!token) {
+  // If the Authorization header or token is missing, proceed to the next middleware
+  if (!header || !token) {
     await next();
+    return;
   }
 
   try {
-    const user = await verify(token as string, c.env.JWT_SECRET);
-
-    console.log(user);
+    const user = await verify(token, c.env.JWT_SECRET);
 
     if (user && typeof user.id === "string") {
       c.set("userId", user.id);
@@ -43,10 +40,10 @@ export const likeMiddleware: MiddlewareHandler<{
       });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     throw new HTTPException(403, {
-      message: "Sorry something went wrong",
+      message: "Invalid or expired token",
     });
   }
 };

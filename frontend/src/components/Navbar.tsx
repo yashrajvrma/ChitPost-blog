@@ -148,24 +148,6 @@ const NavBar = () => {
             </PopoverTrigger>
             <PopoverContent className="font-sans text-sm sm:text-base tracking-tight">
               {accessToken ? (
-                // <div className="flex flex-col justify-start gap-2.5 cursor-pointer">
-                //   <div className="flex flex-row justify-center items-center gap-2">
-                //     <User size={14} />
-                //     <div>{`${user.firstName} ${user.lastName}`}</div>
-                //     {/* <div>{`
-                //       ${user.firstName} ${user.lastName}`}</div> */}
-                //   </div>
-
-                //   <div className="flex flex-row items-center gap-2">
-                //     <PenLine size={14} />
-                //     <div onClick={handlePost}>Your Post</div>
-                //   </div>
-                //   <div className="flex flex-row items-center gap-2">
-                //     <LogOut size={14} />
-
-                //     <div onClick={handleLogout}>Log out</div>
-                //   </div>
-                // </div>
                 <div className="flex flex-col justify-start gap-2.5 cursor-pointer">
                   <div className="flex flex-row justify-center items-center gap-2">
                     <div className="w-4 flex-shrink-0">
@@ -188,7 +170,9 @@ const NavBar = () => {
                     {/* <div onClick={handleLogout}>Log out</div> */}
                     {/* dialog btn */}
                     <AlertDialog>
-                      <AlertDialogTrigger className="hover:text-red-500">Log out</AlertDialogTrigger>
+                      <AlertDialogTrigger className="hover:text-red-500">
+                        Log out
+                      </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
                           <AlertDialogTitle>
@@ -200,7 +184,9 @@ const NavBar = () => {
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel className="hover:bg-slate-50">Cancel</AlertDialogCancel>
+                          <AlertDialogCancel className="hover:bg-slate-50">
+                            Cancel
+                          </AlertDialogCancel>
                           <AlertDialogAction
                             className="text-slate-800 bg-red-500 hover:text-slate-100"
                             onClick={handleLogout}

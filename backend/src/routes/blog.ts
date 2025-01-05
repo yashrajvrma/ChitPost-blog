@@ -121,6 +121,7 @@ blogRouter.get("/:id/view", likeMiddleware, async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
+  console.log("hii");
   const blogId = c.req.param("id");
   const userId = c.get("userId");
 
