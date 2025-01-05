@@ -3,9 +3,8 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { userIdMiddleware } from "../middleware/userIdMiddleware";
-import { likeMiddleware } from "../middleware/likeMiddleware";
 
-export const favRouter = new Hono<{
+export const bookmarkRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECRET: string;
@@ -15,7 +14,7 @@ export const favRouter = new Hono<{
   };
 }>();
 
-favRouter.put("/", authMiddleware, userIdMiddleware, async (c) => {
+bookmarkRouter.put("/", authMiddleware, userIdMiddleware, async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -23,8 +22,7 @@ favRouter.put("/", authMiddleware, userIdMiddleware, async (c) => {
   const { blogId } = await c.req.json();
   const userId = c.get("userId");
 
-  console.log("inside");
-  let alreadyLike;
+  let alreadySaved;
 
   // return if there is no id in body
   if (!blogId) {
@@ -38,8 +36,8 @@ favRouter.put("/", authMiddleware, userIdMiddleware, async (c) => {
   }
 
   try {
-    // check if there are existing likes
-    const existingLikes = await prisma.favourite.findUnique({
+    // check if there are existing bookmark
+    const existingBookmark = await prisma.savedPost.findUnique({
       where: {
         userId_contentId: {
           contentId: blogId,
@@ -47,59 +45,43 @@ favRouter.put("/", authMiddleware, userIdMiddleware, async (c) => {
         },
       },
     });
-    console.log("exsitinglikes");
+    // console.log("exsitinglikes");
 
-    // if there then it would be a like so delete it because user want to remove his like
-
-    if (existingLikes?.id) {
-      const deleteRow = await prisma.favourite.delete({
+    // if existingBookmark is there then remove it
+    if (existingBookmark?.id) {
+      const deleteRow = await prisma.savedPost.delete({
         where: {
-          id: existingLikes.id,
+          id: existingBookmark.id,
         },
       });
-      console.log("deleted");
 
-      alreadyLike = false;
-
-      const totalLikes = await prisma.favourite.count({
-        where: {
-          contentId: blogId,
-        },
-      });
+      alreadySaved = false;
 
       return c.json(
         {
           success: true,
-          existingLikes: alreadyLike,
-          totalLikes: totalLikes,
+          existingBookmark: alreadySaved,
         },
         200
       );
     }
 
-    // if not then add a like
-    const addLike = await prisma.favourite.create({
+    // if not then add a bookmark
+    const addBookmark = await prisma.savedPost.create({
       data: {
         contentId: blogId,
         userId: userId,
-        status: true,
+        saved: true,
       },
     });
-    console.log("added like");
+    // console.log("added like");
 
-    alreadyLike = true;
-
-    const totalLikes = await prisma.favourite.count({
-      where: {
-        contentId: blogId,
-      },
-    });
+    alreadySaved = true;
 
     return c.json(
       {
         success: true,
-        existingLikes: alreadyLike,
-        totalLikes: totalLikes,
+        existingBookmark: alreadySaved,
       },
       200
     );
@@ -108,7 +90,7 @@ favRouter.put("/", authMiddleware, userIdMiddleware, async (c) => {
     return c.json(
       {
         success: false,
-        message: "Something went wrong in fav",
+        message: "Something went wrong in Bookmarking",
       },
       403
     );

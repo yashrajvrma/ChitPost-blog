@@ -1,3 +1,4 @@
+import { use } from "hono/jsx";
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
@@ -121,7 +122,6 @@ blogRouter.get("/:id/view", likeMiddleware, async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  console.log("hii");
   const blogId = c.req.param("id");
   const userId = c.get("userId");
 
@@ -223,6 +223,14 @@ blogRouter.get("/:id/view", likeMiddleware, async (c) => {
     if (!blog) {
       return c.json({ error: "Post not found" }, 404);
     }
+
+    const existingBookmark = await prisma.savedPost.findFirst({
+      where: {
+        contentId: blogId,
+        userId: userId,
+      },
+    });
+
     const exsitinglikes = await prisma.favourite.findFirst({
       where: {
         contentId: blogId,
@@ -241,6 +249,7 @@ blogRouter.get("/:id/view", likeMiddleware, async (c) => {
       success: true,
       blog: blog,
       existingLike: exsitinglikes ? true : false,
+      existingBookmark: existingBookmark ? true : false,
       totalLikes: totalLikes,
     });
   } catch (error) {
