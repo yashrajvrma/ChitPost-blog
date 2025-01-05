@@ -10,7 +10,7 @@ import { Bookmark } from "lucide-react";
 import ShareBtn from "../components/ShareBtn";
 
 // Helper function for copy notification
-const notify = () => toast("Copied to Clipboard");
+const notify = () => toast("Copied to Clipboard!");
 
 // Type definitions for our data structures
 type JsonNode = {
@@ -157,7 +157,7 @@ function DetailedBlog() {
       switch (node.name) {
         case "h1":
           return (
-            <h1 className="md:text-5xl text-4-xl tracking-tight font-bold mb-4">
+            <h1 className="md:text-5xl text-4xl tracking-tight font-extrabold mb-4">
               {children}
             </h1>
           );
@@ -234,6 +234,7 @@ function DetailedBlog() {
                 onClick={() => {
                   navigator.clipboard.writeText(codeText);
                   notify();
+                  // toast.dismiss();
                 }}
                 className="absolute top-2 right-4 pt-1 hover:cursor-pointer"
               >
@@ -245,13 +246,13 @@ function DetailedBlog() {
                 </code>
               </pre>
               <Toaster
-                containerClassName="text-lg font-sans"
+                containerClassName="text-base font-sans"
                 position="top-center"
                 toastOptions={{
                   icon: "✅",
                   duration: 2500,
                   style: {
-                    minWidth: "250px",
+                    minWidth: "200px",
                   },
                 }}
               />
@@ -290,7 +291,7 @@ function DetailedBlog() {
     }
 
     return (
-      <div className="max-w-xl md:max-w-3xl">
+      <div className="max-w-xl sm:max-w-4xl">
         {loading ? (
           <div className="max-w-xl md:max-w-4xl w-full">
             <DetailedBlogSkeleton />
@@ -298,17 +299,17 @@ function DetailedBlog() {
         ) : (
           // Show skeleton while loading
           <>
-            <div>{title}</div>
-            <div className="headline flex flex-row items-center gap-2 md:mb-2 md:mt-1 py-1 max-w-xl md:max-w-4xl border-slate-100">
+            <div className="sm:mb-10">{title}</div>
+            <div className="headline flex flex-row items-center gap-2.5 sm:mb-2 mb-3 md:mt-1 py-1 max-w-xl md:max-w-4xl border-slate-100">
               <div
                 style={{ backgroundColor: userDetail?.author.profileColor }}
-                className="flex w-8 h-8 md:w-12 md:h-12 rounded-full text-neutral-900 justify-center items-center text-center align-middle text-sm tracking-tight"
+                className="flex w-9 h-9 sm:w-12 sm:h-12 rounded-full text-neutral-100 justify-center items-center text-center align-middle text-md tracking-tight"
               >
                 {userDetail?.author.firstName.substring(0, 1).toUpperCase()}
                 {userDetail?.author.lastName.substring(0, 1).toUpperCase()}
               </div>
               <div>
-                <div className="name text-sm md:text-lg text-slate-700 font-semibold">
+                <div className="name text-sm md:text-lg text-slate-900">
                   {userDetail?.author.firstName}{" "}
                   {userDetail?.author.lastName.substring(0, 1).toUpperCase()}
                   {userDetail?.author.lastName.substring(1)}
@@ -318,7 +319,7 @@ function DetailedBlog() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-row justify-between gap-8 items-center align-middle border-t-2 border-b-2 border-neutral-100">
+            <div className="flex flex-row justify-between px-3 gap-8 items-center align-middle border-t-2 border-b-2 border-neutral-100">
               <div className="flex flex-row items-center align-middle gap-7">
                 <div
                   onClick={handleLike}
@@ -336,7 +337,7 @@ function DetailedBlog() {
                       />
                     ) : (
                       <Heart
-                        size={24}
+                        size={20}
                         fill={alreadyLiked ? "red" : "white"}
                         className={`hover:cursor-pointer hover:text-red-500 ${
                           alreadyLiked ? "text-red-500" : "text-neutral-600"
@@ -347,9 +348,9 @@ function DetailedBlog() {
                   </div>
 
                   <div
-                    className="flex items-center text-base text-neutral-600 hover:text-red-500"
+                    className="flex items-center sm:text-base text-sm text-neutral-600 hover:text-red-500"
                     style={{
-                      marginLeft: "10px", // Move slightly to the left
+                      marginLeft: "8px", // Move slightly to the left
                       position: "relative", // Ensure it maintains alignment with the Lottie
                     }}
                   >
@@ -357,13 +358,13 @@ function DetailedBlog() {
                   </div>
                 </div>
 
-                <div className="flex align-middle text-slate-600 hover:cursor-text text-sm md:text-base">
+                <div className="flex align-middle text-slate-600 hover:cursor-text sm:text-base text-sm">
                   {readTime} min read
                 </div>
               </div>
               <div className="flex flex-row gap-7">
                 <div className="bookmark flex text-neutral-600 hover:text-slate-900 hover:cursor-pointer">
-                  <Bookmark size={24} strokeWidth={1.3} />
+                  <Bookmark size={20} strokeWidth={1.3} />
                 </div>
                 <ShareBtn />
               </div>

@@ -75,7 +75,7 @@ const NavBar = () => {
   };
 
   return (
-    <div className="flex flex-row justify-between sm:px-0 px-4 sm:h-24 h-16 text-slate-100 tracking-tight border-b-2 border-slate-100">
+    <div className="flex flex-row sm:max-w-4xl justify-between sm:px-0 px-4 sm:h-24 h-16 text-slate-100 tracking-tight border-b-2 border-slate-100">
       <div className="flex flex-row justify-center items-center gap-4 sm:gap-8">
         <Link to="/">
           <div className="logo font-sans font-medium text-xl sm:text-3xl text-slate-800 cursor-pointer tracking-tighter">
@@ -151,7 +151,7 @@ const NavBar = () => {
                 <div className="flex flex-col justify-start gap-2.5 cursor-pointer">
                   <div className="flex flex-row justify-center items-center gap-2">
                     <div className="w-4 flex-shrink-0">
-                      <User size={15} />
+                      <User size={16} />
                     </div>
                     <div>{`${user.firstName} ${user.lastName}`}</div>
                   </div>
@@ -199,8 +199,8 @@ const NavBar = () => {
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-row gap-2">
-                  <UserPlus className="sm:mt-1 mt-0.5" size={14} />
+                <div className="flex flex-row gap-2 items-center align-middle">
+                  <UserPlus className="mb-0.5" size={16} />
                   <div className="cursor-pointer" onClick={handleSignup}>
                     Create account
                   </div>
