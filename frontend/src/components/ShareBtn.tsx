@@ -32,13 +32,13 @@ function ShareBtn() {
         </div>
       </PopoverTrigger>
       <PopoverContent>
-        <div className="flex flex-row gap-2 hover:cursor-pointer ">
+        <div className="flex flex-row gap-2 hover:cursor-pointer items-center align-middle">
           <div className="text-neutral-700 hover:text-slate-900">
             <Link size={16} strokeWidth={1.4} />
           </div>
           <div
             onClick={() => handleClick()}
-            className="text-neutral-600 hover:text-slate-900 sm:text-base text-sm"
+            className="text-neutral-600 hover:text-slate-900 items-center flex sm:text-base text-sm"
           >
             Copy link
           </div>
