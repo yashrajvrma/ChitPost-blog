@@ -13,7 +13,7 @@ const handleClick = () => {
   console.log("from sharebtn");
   toast.dismiss();
   // toast("Copied to Clipboard!", { id: "copy-toast-a" });
-  toast("Copied to Clipboard!", {
+  toast("Copied!", {
     icon: "✅",
     duration: 2500,
     style: {

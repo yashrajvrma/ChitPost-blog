@@ -137,7 +137,7 @@ const NavBar = () => {
               {user.profileColor ? (
                 <div
                   style={{ backgroundColor: user.profileColor }}
-                  className="flex w-7 h-7 md:w-8 md:h-8 rounded-full text-slate-900 justify-center items-center  align-middle sm:text-sm text-xs tracking-tighter"
+                  className="flex w-7 h-7 md:w-8 md:h-8 rounded-full text-slate-50 justify-center items-center  align-middle sm:text-sm text-xs tracking-tighter"
                 >
                   {user.firstName.substring(0, 1).toUpperCase()}
                   {user.lastName.substring(0, 1).toUpperCase()}

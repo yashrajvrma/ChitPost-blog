@@ -68,7 +68,6 @@ function BlogCard({
           <div className="md:w-56 w-64 h-48 flex justify-center items-center md:pt-6 pb-6">
             <img
               src={imageUrl}
-              alt="blog-preview"
               className="md:w-full md:max-h-44 object-cover"
             />
           </div>
