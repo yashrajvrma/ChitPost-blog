@@ -174,7 +174,7 @@ const NavBar = () => {
                   <div className="flex flex-row items-center gap-2 text-slate-600 hover:text-neutral-900">
                     <div className="w-4 flex-shrink-0">
                       {/* <PenLine size={14} /> */}
-                      <img src="../../public/assets/images/icons8-article-32.png" />
+                      <img src="/assets/images/icons8-article-32.png" />
                     </div>
                     <div onClick={handlePost}>Your Post</div>
                   </div>
